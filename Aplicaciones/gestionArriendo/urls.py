@@ -7,6 +7,7 @@ urlpatterns = [
     path('habitaciones',views.habitaciones),
     path('iniciarSesion',views.iniciarSesion),
     path('cerrarSesion', views.cerrarSesion),
+    path('registrarUsuario',views.registrarUsuario),
     path('registro',views.registro),
     
 ]

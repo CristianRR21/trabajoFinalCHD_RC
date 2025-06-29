@@ -1,17 +1,29 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+
 
 #from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
 
-class Usuario(models.Model):
-    id = models.AutoField(primary_key=True)
+    
+    
+    
+ 
+class Usuario(AbstractUser):
     telefono = models.CharField(max_length=10)
-    rol = models.TextField(null=True,blank=True,default='Arrendatario')
     direccion = models.TextField()
+    rol = models.TextField(default='Arrendatario')
     bloqueado = models.BooleanField(default=False)
-    email = models.EmailField(unique=True,null=True,blank=True)
-    password = models.TextField(null=True,blank=True)
+
+    def __str__(self):
+        return self.username   
+    
+    
+    
+    
+    
+    
 
 class TipoHabitacion(models.Model):
     id = models.AutoField(primary_key=True)

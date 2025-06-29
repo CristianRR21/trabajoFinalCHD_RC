@@ -41,6 +41,10 @@ INSTALLED_APPS = [
     'Aplicaciones.gestionArriendo',
 ]
 
+AUTH_USER_MODEL = 'gestionArriendo.Usuario'
+
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -78,9 +82,9 @@ WSGI_APPLICATION = 'trabajoFinalCHD_RC.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dbarriendohabi',
-        'USER': 'django_user',
-        'PASSWORD': 'django123',
+        'NAME': 'bdArriendoHabitaciones',
+        'USER': 'django',
+        'PASSWORD': 'django',
         'HOST': 'localhost',
         'PORT': '5432',
     }

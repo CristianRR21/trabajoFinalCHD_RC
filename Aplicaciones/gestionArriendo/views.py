@@ -1,9 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.hashers import check_password
 from .models import Usuario
+from django.contrib.auth.hashers import make_password
+
 # Create your views here.
 def administrador(request):
     return render(request,"administrador/index.html")
@@ -29,29 +31,31 @@ def iniciarSesion(request):
             if check_password(password, usuario.password):
                 if usuario.bloqueado:
                     messages.error(request, "Usuario bloqueado.")
-                    return redirect('/')
+                    return render(request, 'login/login.html')
 
                 # Guardar sesión
                 request.session['usuario_id'] = usuario.id
                 request.session['usuario_rol'] = usuario.rol
                 request.session['usuario_email'] = usuario.email
 
-                # Redirección según rol
+                # Mostrar directamente la plantilla correspondiente
                 if usuario.rol == 'Administrador':
-                    return redirect('/administrador')
+                    return render(request, 'administrador/index.html')
                 elif usuario.rol in ['Arrendador', 'Arrendatario']:
-                    return redirect('/habitaciones')
+                    return render(request, 'habitaciones/index.html')
                 else:
                     messages.error(request, "Rol desconocido.")
-                    return redirect('/')
+                    return render(request, 'login/login.html')
             else:
                 messages.error(request, "Contraseña incorrecta.")
-                return redirect('/')
+                return render(request, 'login/login.html')
+
         except Usuario.DoesNotExist:
             messages.error(request, "Correo no registrado.")
-            return redirect('/')
+            return render(request, 'login/login.html')
 
     return render(request, 'login/login.html')
+
 
 
 def cerrarSesion(request):
@@ -59,43 +63,39 @@ def cerrarSesion(request):
     return redirect('/')
 
 def registro(request):
-    return render(request,'login/registro.html')
+    return render(request,'login/registrarUsuario')
+
+
+
 
 
 def registrarUsuario(request):
     if request.method == 'POST':
-        first_name = request.POST.get('nombres')
-        last_name = request.POST.get('apellidos')
+        username = request.POST.get('username')
         email = request.POST.get('email')
+        password = request.POST.get('password')
+        password2 = request.POST.get('password2')
         telefono = request.POST.get('telefono')
         direccion = request.POST.get('direccion')
-        password = request.POST.get('password')
-        confirmar_password = request.POST.get('confirmar_password')
+        first_name = request.POST.get('first_name')  # para nombres
+        last_name = request.POST.get('last_name')    # para apellidos
 
-        # Verificar contraseñas
-        if password != confirmar_password:
-            messages.error(request, 'Las contraseñas no coinciden.')
-            return redirect('/registro')
-
-        # Verificar si ya existe el correo
-        if Usuario.objects.filter(email=email).exists():
-            messages.error(request, 'El correo ya está registrado.')
-            return redirect('/registro')
+        if password != password2:
+            messages.error(request, "Las contraseñas no coinciden.")
+            return render(request, 'login/registrarUsuario.html')
 
         # Crear usuario
         usuario = Usuario(
-            username=email,  
+            username=username,
+            email=email,
             first_name=first_name,
             last_name=last_name,
-            email=email,
             telefono=telefono,
             direccion=direccion,
-            rol='Arrendatario'  # por defecto
+            password=make_password(password),  # encriptar contraseña
         )
-        usuario.set_password(password)
         usuario.save()
-
-        messages.success(request, 'Registro exitoso. Inicia sesión.')
+        messages.success(request, "Usuario registrado correctamente.")
         return redirect('/')
 
-    return render(request, 'login/registro.html') 
+    return render(request, 'login/registrarUsuario.html')
