@@ -3,7 +3,7 @@ from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.hashers import check_password
-from .models import Usuario
+from .models import Usuario,TipoHabitacion
 from django.contrib.auth.hashers import make_password
 
 # Create your views here.
@@ -117,3 +117,18 @@ def registrarUsuario(request):
         return redirect('/')
 
     return render(request, 'login/registrarUsuario.html')
+
+def nuevaPublicacion(request):
+    return render(request,'habitaciones/nuevaPublicacion.html')
+
+#administrador
+def nuevoTipo(request):
+    return render(request,'administrador/nuevoTipo.html')
+
+def guardarTipo(request):
+    nombre=request.POST['nombre']
+    messages.success(request,"Guardado exitosamente")
+    tipo=TipoHabitacion.objects.create(nombre=nombre)
+    return render(request,"administrador/index.html")
+    
+    

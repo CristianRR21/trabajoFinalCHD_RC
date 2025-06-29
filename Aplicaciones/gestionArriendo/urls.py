@@ -3,11 +3,17 @@ from.import views
 urlpatterns = [
     
     path('',views.login),
-    path('administrador',views.administrador),
+   
     path('habitaciones',views.habitaciones),
     path('iniciarSesion',views.iniciarSesion),
     path('cerrarSesion', views.cerrarSesion),
     path('registrarUsuario',views.registrarUsuario),
     path('registro',views.registro),
+    path('nuevaPublicacion',views.nuevaPublicacion),
+    #administrador
+    path('administrador',views.administrador),
+    path('nuevoTipo',views.nuevoTipo),
+    path('guardarTipo',views.guardarTipo),
+    
     
 ]

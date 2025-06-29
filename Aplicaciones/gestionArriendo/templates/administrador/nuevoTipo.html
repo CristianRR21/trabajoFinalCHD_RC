@@ -1,0 +1,19 @@
+{% extends 'administrador/plantilla.html' %}
+
+{% block contenido %}
+
+
+
+
+<form method="POST" action="/guardarTipo" class="mt-3">
+    {% csrf_token %}
+    
+    <div class="mb-3">
+        <label for="nombre" class="form-label">Nombre del tipo de habitación</label>
+        <input type="text" class="form-control" id="nombre" name="nombre" required placeholder="Ej: Departamento, Habitación compartida">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+</form>
+
+{% endblock %}
