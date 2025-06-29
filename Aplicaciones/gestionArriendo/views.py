@@ -7,17 +7,43 @@ from .models import Usuario
 from django.contrib.auth.hashers import make_password
 
 # Create your views here.
-def administrador(request):
-    return render(request,"administrador/index.html")
-
 
 def login(request):
     return render(request,"login/login.html")
 
-def habitaciones(request):
-    return render(request,"habitaciones/index.html")
 
-#def iniciarSesion(request):
+def cerrarSesion(request):
+    request.session.flush()
+    return redirect('/')
+
+def registro(request):
+    return render(request,'login/registrarUsuario')
+
+
+
+def administrador(request):
+    if 'usuario_id' not in request.session:
+        return redirect('/')
+
+    usuario = Usuario.objects.get(id=request.session['usuario_id'])
+
+
+    return render(request,"administrador/index.html", {
+        'usuario': usuario
+    })
+
+
+
+def habitaciones(request):
+    if 'usuario_id' not in request.session:
+        return redirect('/')
+
+    usuario = Usuario.objects.get(id=request.session['usuario_id'])
+
+    return render(request, "habitaciones/index.html", {
+        'usuario': usuario
+    })
+
 
 
 def iniciarSesion(request):
@@ -33,16 +59,16 @@ def iniciarSesion(request):
                     messages.error(request, "Usuario bloqueado.")
                     return render(request, 'login/login.html')
 
-                # Guardar sesión
+                # Guardar sesión AQUI ES DONDE YA MANEJO EL REGISTRO DE DATOS PARA LA SESSION
                 request.session['usuario_id'] = usuario.id
                 request.session['usuario_rol'] = usuario.rol
                 request.session['usuario_email'] = usuario.email
 
                 # Mostrar directamente la plantilla correspondiente
                 if usuario.rol == 'Administrador':
-                    return render(request, 'administrador/index.html')
+                    return redirect('/administrador')
                 elif usuario.rol in ['Arrendador', 'Arrendatario']:
-                    return render(request, 'habitaciones/index.html')
+                    return redirect('/habitaciones')
                 else:
                     messages.error(request, "Rol desconocido.")
                     return render(request, 'login/login.html')
@@ -56,14 +82,6 @@ def iniciarSesion(request):
 
     return render(request, 'login/login.html')
 
-
-
-def cerrarSesion(request):
-    request.session.flush()
-    return redirect('/')
-
-def registro(request):
-    return render(request,'login/registrarUsuario')
 
 
 
