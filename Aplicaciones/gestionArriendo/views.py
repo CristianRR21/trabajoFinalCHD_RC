@@ -57,3 +57,45 @@ def iniciarSesion(request):
 def cerrarSesion(request):
     request.session.flush()
     return redirect('/')
+
+def registro(request):
+    return render(request,'login/registro.html')
+
+
+def registrarUsuario(request):
+    if request.method == 'POST':
+        first_name = request.POST.get('nombres')
+        last_name = request.POST.get('apellidos')
+        email = request.POST.get('email')
+        telefono = request.POST.get('telefono')
+        direccion = request.POST.get('direccion')
+        password = request.POST.get('password')
+        confirmar_password = request.POST.get('confirmar_password')
+
+        # Verificar contraseñas
+        if password != confirmar_password:
+            messages.error(request, 'Las contraseñas no coinciden.')
+            return redirect('/registro')
+
+        # Verificar si ya existe el correo
+        if Usuario.objects.filter(email=email).exists():
+            messages.error(request, 'El correo ya está registrado.')
+            return redirect('/registro')
+
+        # Crear usuario
+        usuario = Usuario(
+            username=email,  
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            telefono=telefono,
+            direccion=direccion,
+            rol='Arrendatario'  # por defecto
+        )
+        usuario.set_password(password)
+        usuario.save()
+
+        messages.success(request, 'Registro exitoso. Inicia sesión.')
+        return redirect('/')
+
+    return render(request, 'login/registro.html') 
