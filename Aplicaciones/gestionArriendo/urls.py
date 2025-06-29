@@ -9,11 +9,13 @@ urlpatterns = [
     path('cerrarSesion', views.cerrarSesion),
     path('registrarUsuario',views.registrarUsuario),
     path('registro',views.registro),
+    
     path('nuevaPublicacion',views.nuevaPublicacion),
     #administrador
     path('administrador',views.administrador),
     path('nuevoTipo',views.nuevoTipo),
     path('guardarTipo',views.guardarTipo),
+    path('guardarPublicacion',views.guardarPublicacion),
     
     
 ]

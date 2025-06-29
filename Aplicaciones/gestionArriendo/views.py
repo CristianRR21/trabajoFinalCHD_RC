@@ -3,7 +3,7 @@ from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.hashers import check_password
-from .models import Usuario,TipoHabitacion
+from .models import Usuario,TipoHabitacion,Publicacion,Fotografia
 from django.contrib.auth.hashers import make_password
 
 # Create your views here.
@@ -119,7 +119,8 @@ def registrarUsuario(request):
     return render(request, 'login/registrarUsuario.html')
 
 def nuevaPublicacion(request):
-    return render(request,'habitaciones/nuevaPublicacion.html')
+    tipos=TipoHabitacion.objects.all()
+    return render(request,'habitaciones/nuevaPublicacion.html',{'tipos':tipos})
 
 #administrador
 def nuevoTipo(request):
@@ -131,4 +132,37 @@ def guardarTipo(request):
     tipo=TipoHabitacion.objects.create(nombre=nombre)
     return render(request,"administrador/index.html")
     
-    
+
+def guardarPublicacion(request):
+    if request.method == 'POST':
+        titulo = request.POST['titulo']
+        precio = request.POST['precio']
+        descripcion = request.POST['descripcion']
+        tipo_id = request.POST['tipohabitacion']
+        latitud = request.POST['latitud']
+        longitud = request.POST['longitud']
+        imagenes = request.FILES.getlist('imagenes[]')
+
+        if len(imagenes) > 5:
+            messages.error(request, "No puedes subir más de 5 imágenes.")
+            return redirect('/nuevaPublicacion')  # o como se llame tu URL
+
+        publicacion = Publicacion.objects.create(
+            titulo=titulo,
+            precio=precio,
+            descripcion=descripcion,
+            tipo_id=tipo_id,
+            latitud=latitud,
+            longitud=longitud,
+            usuario_id=request.session['usuario']  # si usas sesión
+        )
+
+        for imagen in imagenes:
+            Fotografia.objects.create(
+                publicacion=publicacion,imagen=imagen
+            )
+
+        messages.success(request, "Publicación registrada correctamente.")
+        return redirect('/habitaciones')
+
+    return redirect('/')

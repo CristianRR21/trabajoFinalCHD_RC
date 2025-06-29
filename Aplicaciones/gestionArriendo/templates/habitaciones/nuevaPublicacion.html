@@ -1,0 +1,113 @@
+{% extends 'habitaciones/plantilla.html' %}
+
+{% block contenido %}
+
+<h1 class="text-center mt-4">Nueva Publicación</h1>
+
+<form method="POST" enctype="multipart/form-data" action="/guardarpublicacion" class="container mt-4">
+    {% csrf_token %}
+
+    <div class="mb-3">
+        <label for="titulo" class="form-label">Título</label>
+        <input type="text" name="titulo" id="titulo" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="precio" class="form-label">Precio</label>
+        <input type="number" name="precio" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="descripcion" class="form-label">Descripción</label>
+        <textarea name="descripcion" class="form-control" rows="4" required></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label for="tipohabitacion" class="form-label">Tipo de habitación</label>
+        <select name="tipohabitacion" id="tipohabitacion" class="form-select" required>
+            <option value="">---- Seleccione una opción ----</option>
+            {% for tipo in tipos %}
+                <option value="{{ tipo.id }}">{{ tipo.nombre }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="latitud">Latitud</label>
+        <input type="text" class="form-control" id="latitud" name="latitud" readonly required>
+
+        <label for="longitud" class="mt-2">Longitud</label>
+        <input type="text" class="form-control" id="longitud" name="longitud" readonly required>
+    </div>
+
+    <div class="" id="mapa_cliente" style="border:1px solid black; height:250px;
+            width:50%"> </div>
+
+    <label for="imagenes">Subir imágenes</label>
+    <div class="file-loading">
+        <input id="imagenes" name="imagenes[]" type="file" multiple>
+    </div>
+    <br><br><br><br><br><br>
+
+    <div class="text-end mt-3">
+        <button type="submit" class="btn btn-success">Publicar</button>
+    </div>
+</form>
+
+
+<script>
+
+        $("#imagenes").fileinput({
+           language: "es",
+        allowedFileExtensions: ["jpg", "jpeg", "png"],
+        showCaption: false,
+        dropZoneEnabled: true,
+        showClose: false,
+        maxFileCount: 5, // máximo 5 fotos
+        browseClass: "btn btn-primary",
+        msgPlaceholder: "Selecciona hasta 5 imágenes..."
+        });
+
+</script>
+
+
+<script type="text/javascript">
+
+      function initMap(){
+        
+        var latitud_longitud= new google.maps.LatLng(-0.9374805,-78.6161327);
+        var mapa=new google.maps.Map(
+          document.getElementById('mapa_cliente'),
+          {
+            center:latitud_longitud,
+            zoom:7,
+            mapTypeId:google.maps.MapTypeId.ROADMAP
+          }
+        );
+        var marcador=new google.maps.Marker({
+          position:latitud_longitud,
+          map:mapa,
+          title:"Seleccione la direccion",
+          draggable:true
+        });
+        google.maps.event.addListener(
+          marcador,
+          'dragend',
+          function(event){
+            var latitud=this.getPosition().lat();
+            var longitud=this.getPosition().lng();
+            /*alert("LATITUD: "+latitud);
+            alert("LONGITUD: "+longitud);*/
+            document.getElementById("latitud").value=latitud;
+            document.getElementById("longitud").value=longitud;
+          }
+        );
+      }
+
+</script>
+
+
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBPMAF9GQ1RsZognLTwwb7kYiT8SAfNZHo&callback=initMap"></script>
+
+{% endblock %}
