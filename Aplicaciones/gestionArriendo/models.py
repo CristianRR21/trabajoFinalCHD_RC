@@ -7,9 +7,11 @@ from django.db import models
 class Usuario(models.Model):
     id = models.AutoField(primary_key=True)
     telefono = models.CharField(max_length=10)
-
+    rol = models.TextField(null=True,blank=True,default='Arrendatario')
     direccion = models.TextField()
     bloqueado = models.BooleanField(default=False)
+    email = models.EmailField(unique=True,null=True,blank=True)
+    password = models.TextField(null=True,blank=True)
 
 class TipoHabitacion(models.Model):
     id = models.AutoField(primary_key=True)
