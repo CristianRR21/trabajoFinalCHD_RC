@@ -15,7 +15,11 @@ urlpatterns = [
     path('administrador',views.administrador),
     path('nuevoTipo',views.nuevoTipo),
     path('guardarTipo',views.guardarTipo),
-    path('guardarPublicacion',views.guardarPublicacion),
+    
+    path('guardarpublicacion',views.guardarpublicacion),
+    
+    path('misPublicaciones',views.misPublicaciones),
+    
     
     
 ]

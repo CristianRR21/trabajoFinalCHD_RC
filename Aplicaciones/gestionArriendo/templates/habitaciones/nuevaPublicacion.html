@@ -9,22 +9,22 @@
 
     <div class="mb-3">
         <label for="titulo" class="form-label">Título</label>
-        <input type="text" name="titulo" id="titulo" class="form-control" required>
+        <input type="text" name="titulo" id="titulo" class="form-control" >
     </div>
 
     <div class="mb-3">
         <label for="precio" class="form-label">Precio</label>
-        <input type="number" name="precio" class="form-control" required>
+        <input name="precio" id="precio" class="form-control" >
     </div>
 
     <div class="mb-3">
         <label for="descripcion" class="form-label">Descripción</label>
-        <textarea name="descripcion" class="form-control" rows="4" required></textarea>
+        <textarea name="descripcion" id="descripcion" class="form-control" rows="4" ></textarea>
     </div>
 
     <div class="mb-3">
         <label for="tipohabitacion" class="form-label">Tipo de habitación</label>
-        <select name="tipohabitacion" id="tipohabitacion" class="form-select" required>
+        <select name="tipohabitacion" id="tipohabitacion" class="form-select" >
             <option value="">---- Seleccione una opción ----</option>
             {% for tipo in tipos %}
                 <option value="{{ tipo.id }}">{{ tipo.nombre }}</option>
@@ -34,24 +34,27 @@
 
     <div class="mb-3">
         <label for="latitud">Latitud</label>
-        <input type="text" class="form-control" id="latitud" name="latitud" readonly required>
+        <input type="text" class="form-control" id="latitud" name="latitud"  >
 
         <label for="longitud" class="mt-2">Longitud</label>
-        <input type="text" class="form-control" id="longitud" name="longitud" readonly required>
+        <input type="text" class="form-control" id="longitud" name="longitud" >
     </div>
-
+      <br><br>
     <div class="" id="mapa_cliente" style="border:1px solid black; height:250px;
-            width:50%"> </div>
+    width:50%"> </div>
 
     <label for="imagenes">Subir imágenes</label>
-    <div class="file-loading">
+    <div>
         <input id="imagenes" name="imagenes[]" type="file" multiple>
     </div>
-    <br><br><br><br><br><br>
+
+    <br><br>
 
     <div class="text-end mt-3">
-        <button type="submit" class="btn btn-success">Publicar</button>
+        <button type="submit" class="btn btn-success">Publicar</button> &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="/publicaciones">Cancelar</a>
     </div>
+
 </form>
 
 
@@ -63,7 +66,7 @@
         showCaption: false,
         dropZoneEnabled: true,
         showClose: false,
-        maxFileCount: 5, // máximo 5 fotos
+        maxFileCount: 5,
         browseClass: "btn btn-primary",
         msgPlaceholder: "Selecciona hasta 5 imágenes..."
         });

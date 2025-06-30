@@ -33,6 +33,7 @@ def administrador(request):
     })
 
 
+##publicaciones disponibles
 
 def habitaciones(request):
     if 'usuario_id' not in request.session:
@@ -40,10 +41,25 @@ def habitaciones(request):
 
     usuario = Usuario.objects.get(id=request.session['usuario_id'])
 
-    return render(request, "habitaciones/index.html", {
-        'usuario': usuario
-    })
+    publicaciones = Publicacion.objects.filter(estado='ACTIVO').select_related('usuario', 'tipohabitacion')
 
+    data = []
+    for pub in publicaciones:
+        foto = Fotografia.objects.filter(publicacion=pub).order_by('orden').first()
+        data.append({
+            'id': pub.id,
+            'titulo': pub.titulo,
+            'precio': pub.precio,
+            'descripcion': pub.descripcion,
+            'tipo': pub.tipohabitacion.nombre,
+            'usuario': pub.usuario.username,
+            'foto_url': foto.imagen.url if foto and foto.imagen else None
+        })
+
+    return render(request, "habitaciones/index.html", {
+        'usuario': usuario,
+        'publicaciones': data
+    })
 
 
 def iniciarSesion(request):
@@ -133,36 +149,44 @@ def guardarTipo(request):
     return render(request,"administrador/index.html")
     
 
-def guardarPublicacion(request):
+def guardarpublicacion(request):
     if request.method == 'POST':
         titulo = request.POST['titulo']
-        precio = request.POST['precio']
+        precio = request.POST['precio'].replace(',','.')
         descripcion = request.POST['descripcion']
-        tipo_id = request.POST['tipohabitacion']
+        
+        tipo = request.POST['tipohabitacion']
+        idtipo=TipoHabitacion.objects.get(id=tipo)
+                
         latitud = request.POST['latitud']
         longitud = request.POST['longitud']
+        
         imagenes = request.FILES.getlist('imagenes[]')
 
-        if len(imagenes) > 5:
-            messages.error(request, "No puedes subir más de 5 imágenes.")
-            return redirect('/nuevaPublicacion')  # o como se llame tu URL
 
         publicacion = Publicacion.objects.create(
+            usuario_id=request.session['usuario_id'],
             titulo=titulo,
             precio=precio,
             descripcion=descripcion,
-            tipo_id=tipo_id,
+            tipohabitacion=idtipo,
             latitud=latitud,
             longitud=longitud,
-            usuario_id=request.session['usuario']  # si usas sesión
+           
         )
 
-        for imagen in imagenes:
+        for index, imagen in enumerate(imagenes, start=1):
             Fotografia.objects.create(
-                publicacion=publicacion,imagen=imagen
+                publicacion=publicacion,
+                imagen=imagen,
+                orden=index
             )
 
         messages.success(request, "Publicación registrada correctamente.")
         return redirect('/habitaciones')
 
     return redirect('/')
+
+
+def misPublicaciones(request):
+    return render(request,"habitaciones/misPublicaciones.html")

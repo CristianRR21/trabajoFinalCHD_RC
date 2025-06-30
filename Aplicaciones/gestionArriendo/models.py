@@ -4,8 +4,6 @@ from django.contrib.auth.models import AbstractUser
 
 #from django.contrib.auth.models import AbstractUser
 # Create your models here.
-
-
     
     
     
@@ -29,6 +27,7 @@ class TipoHabitacion(models.Model):
     id = models.AutoField(primary_key=True)
     nombre = models.TextField()
 
+
 class Publicacion(models.Model):
     id = models.AutoField(primary_key=True)
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
@@ -40,6 +39,9 @@ class Publicacion(models.Model):
     longitud = models.DecimalField(max_digits=9, decimal_places=6)
     fechacreacion = models.DateField(auto_now_add=True)
     estado = models.TextField(default='ACTIVO') 
+
+
+
 
 class Fotografia(models.Model):
     id = models.AutoField(primary_key=True)
