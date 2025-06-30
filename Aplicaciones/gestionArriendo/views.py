@@ -249,8 +249,7 @@ def publicaciones(request):
     return render(request, "administrador/publicaciones.html", {
         'publicaciones': publicaciones  
     })
-'''
+
 def usuarios(request):
     usuarios=Usuario.objects.all()
     return render(request,"administrador/usuariosActivos.html",{'usuarios': usuarios})
-'''

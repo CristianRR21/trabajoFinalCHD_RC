@@ -24,7 +24,7 @@ urlpatterns = [
     
     path('detallesPublicacion/<id>',views.detallesPublicacion),
     path('publicaciones',views.publicaciones),
-    #path('usuarios',views.usuarios),
+    path('usuarios',views.usuarios),
     
     
 ]
