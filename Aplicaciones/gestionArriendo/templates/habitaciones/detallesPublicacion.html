@@ -1,0 +1,38 @@
+{% extends 'habitaciones/plantilla.html' %}
+
+{% block contenido %}
+<br>
+<div class="container mt-4">
+
+  <!-- Galería de imágenes -->
+  {% if fotos %}
+  <div class="row mb-4">
+    {% for foto in fotos %}
+      {% if foto.imagen %}
+      <div class="col-md-4 col-sm-6 mb-3">
+        <img src="{{ foto.imagen.url }}" class="img-fluid rounded shadow-sm"
+             style="height: 250px; object-fit: cover; width: 100%;" alt="Imagen de la publicación">
+      </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Detalles de la publicación -->
+  <div class="col-md-8 col-12 mb-4">
+    <h4 class="mb-1 text-primary fw-bold">$ {{ publicacion.precio }} / mes</h4>
+    <h5>{{ publicacion.titulo }}</h5>
+    <p class="mb-1"><strong>Tipo:</strong> {{ publicacion.tipohabitacion.nombre }}</p>
+    <p class="mb-1" style="font-size: 15px;">{{ publicacion.descripcion }}</p>
+  </div>
+
+  <!-- Ubicación -->
+  <div class="mb-5">
+    <h5 class="fw-bold">Ubicación</h5>
+    <p>Latitud: {{ publicacion.latitud }}</p>
+    <p>Longitud: {{ publicacion.longitud }}</p>
+  </div>
+
+</div>
+
+{% endblock %}

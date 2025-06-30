@@ -20,7 +20,9 @@ urlpatterns = [
     
     path('misPublicaciones',views.misPublicaciones),
     path('eliminarPublicacion/<id>',views.eliminarPublicacion),
+        
     
+    path('detallesPublicacion/<id>',views.detallesPublicacion),
     
     
     

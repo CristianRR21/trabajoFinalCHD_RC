@@ -27,6 +27,7 @@
         
     <div class="row">
         <!-- Imagen izquierda -->
+         <a href="detallesPublicacion/{{pub.id}}">
         <div class="col-md-2 col-12 text-center mb-3 mb-md-0">
           {% if pub.foto_url %}
             <img src="{{ pub.foto_url }}" alt="Imagen de {{ pub.titulo }}"
@@ -34,6 +35,7 @@
             {% endif %}
 
         </div>
+        </a>
 
         <!-- Detalles centrales -->
         <div class="col-md-8 col-12">

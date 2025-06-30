@@ -228,4 +228,14 @@ def eliminarPublicacion(request,id):
    
 
 
+def detallesPublicacion(request,id):
+    publi=Publicacion.objects.get(id=id)  
+    
+    fotos = Fotografia.objects.filter(publicacion=publi).order_by('orden')
+
+    return render(request, "habitaciones/detallesPublicacion.html", {
+        'publicacion': publi,
+        'fotos': fotos
+    })
+
 
