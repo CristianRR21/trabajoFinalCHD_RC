@@ -34,14 +34,15 @@
 
     <div class="mb-3">
         <label for="latitud">Latitud</label>
-        <input type="text" class="form-control" id="latitud" name="latitud"  >
+        <input type="text" class="form-control" id="latitud" name="latitud" readonly >
 
         <label for="longitud" class="mt-2">Longitud</label>
-        <input type="text" class="form-control" id="longitud" name="longitud" >
+        <input type="text" class="form-control" id="longitud" name="longitud"  readonly>
     </div>
+
       <br><br>
-    <div class="" id="mapa_cliente" style="border:1px solid black; height:250px;
-    width:50%"> </div>
+    <div class="" id="mapa_cliente" style="border:1px solid black; height:300px;
+    width:100%"> </div>
 
     <label for="imagenes">Subir imágenes</label>
     <div>
@@ -72,6 +73,7 @@
         });
 
 </script>
+
 
 
 <script type="text/javascript">
@@ -106,11 +108,8 @@
           }
         );
       }
-
 </script>
 
 
-
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBPMAF9GQ1RsZognLTwwb7kYiT8SAfNZHo&callback=initMap"></script>
 
 {% endblock %}

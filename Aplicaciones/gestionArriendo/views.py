@@ -17,7 +17,7 @@ def cerrarSesion(request):
     return redirect('/')
 
 def registro(request):
-    return render(request,'login/registrarUsuario')
+    return render(request,'login/registrarUsuario.html')
 
 
 
@@ -158,8 +158,8 @@ def guardarpublicacion(request):
         tipo = request.POST['tipohabitacion']
         idtipo=TipoHabitacion.objects.get(id=tipo)
                 
-        latitud = request.POST['latitud']
-        longitud = request.POST['longitud']
+        latitud = request.POST.get('latitud')
+        longitud = request.POST.get('longitud')
         
         imagenes = request.FILES.getlist('imagenes[]')
 

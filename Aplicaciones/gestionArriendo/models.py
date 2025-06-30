@@ -3,11 +3,9 @@ from django.contrib.auth.models import AbstractUser
 
 
 #from django.contrib.auth.models import AbstractUser
-# Create your models here.
+# Create your models here. 
     
-    
-    
- 
+     
 class Usuario(AbstractUser):
     telefono = models.CharField(max_length=10)
     direccion = models.TextField()
@@ -16,10 +14,7 @@ class Usuario(AbstractUser):
 
     def __str__(self):
         return self.username   
-    
-    
-    
-    
+         
     
     
 
@@ -32,7 +27,7 @@ class Publicacion(models.Model):
     id = models.AutoField(primary_key=True)
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     titulo = models.TextField()
-    precio = models.DecimalField(max_digits=5, decimal_places=3)
+    precio = models.DecimalField(max_digits=10, decimal_places=2)
     descripcion = models.TextField()
     tipohabitacion = models.ForeignKey(TipoHabitacion, on_delete=models.PROTECT)
     latitud = models.DecimalField(max_digits=9, decimal_places=6)

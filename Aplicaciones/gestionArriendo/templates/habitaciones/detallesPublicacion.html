@@ -10,8 +10,8 @@
     {% for foto in fotos %}
       {% if foto.imagen %}
       <div class="col-md-4 col-sm-6 mb-3">
-        <img src="{{ foto.imagen.url }}" class="img-fluid rounded shadow-sm"
-             style="height: 250px; object-fit: cover; width: 100%;" alt="Imagen de la publicación">
+        <img src="{{ foto.imagen.url }}"
+             style="height: 250px; width: 100%; object-fit: cover;" alt="Imagen de la publicación">
       </div>
       {% endif %}
     {% endfor %}
@@ -27,12 +27,56 @@
   </div>
 
   <!-- Ubicación -->
+
+ <br><br> <br><br> <br><br>
   <div class="mb-5">
-    <h5 class="fw-bold">Ubicación</h5>
-    <p>Latitud: {{ publicacion.latitud }}</p>
-    <p>Longitud: {{ publicacion.longitud }}</p>
+
+    <div class="" id="mapa_cliente" style="border:1px solid black; height:300px;
+    width:100%"> </div>
   </div>
 
-</div>
 
+
+ <br><br>
+  <h1>COMENTAR</h1>
+  <h1>CALIFICAR ESCALA 1-5 </h1>
+  <h1>{{ publicacion.latitud }}</h1>
+  <h1>{{ publicacion.longitud }}</h1>
+</div>
+ 
+
+<script type="text/javascript">
+    function initMap() {
+        
+     
+        var lat = parseFloat("{{ publicacion.latitud }}".replace(",", "."));
+        var lng = parseFloat("{{ publicacion.longitud }}".replace(",", "."));
+
+        console.log("Latitud:", lat, "Longitud:", lng); 
+
+        var latitud_longitud = new google.maps.LatLng(lat, lng);
+
+        var mapa = new google.maps.Map(document.getElementById('mapa_cliente'), {
+            center: latitud_longitud,
+            zoom: 15,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+
+       var marcador = new google.maps.Marker({
+            position: latitud_longitud,
+            map: mapa,
+            title: "Ubicación de la publicación",
+            draggable: false  
+        });
+
+
+        google.maps.event.addListener(marcador, 'dragend', function(event) {
+            var latitud = this.getPosition().lat();
+            var longitud = this.getPosition().lng();
+            document.getElementById("latitud").value = latitud;
+            document.getElementById("longitud").value = longitud;
+        });
+    }
+</script>
 {% endblock %}
+
