@@ -213,3 +213,19 @@ def misPublicaciones(request):
         'usuario': usuario,
         'publicaciones': data
     })
+
+
+
+def eliminarPublicacion(request,id):
+    publi=Publicacion.objects.get(id=id)  
+    fotos = Fotografia.objects.filter(publicacion=publi)
+    for foto in fotos:
+            if foto.imagen:
+                foto.imagen.delete(save=False)
+            foto.delete()
+    publi.delete()
+    return redirect('/misPublicaciones')
+   
+
+
+

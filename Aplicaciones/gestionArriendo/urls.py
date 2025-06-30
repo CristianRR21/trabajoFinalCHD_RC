@@ -19,6 +19,8 @@ urlpatterns = [
     path('guardarpublicacion',views.guardarpublicacion),
     
     path('misPublicaciones',views.misPublicaciones),
+    path('eliminarPublicacion/<id>',views.eliminarPublicacion),
+    
     
     
     
