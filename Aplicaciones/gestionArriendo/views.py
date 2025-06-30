@@ -238,3 +238,21 @@ def detallesPublicacion(request,id):
         'fotos': fotos
     })
 
+<<<<<<< HEAD
+=======
+
+def publicaciones(request):
+    publicaciones = Publicacion.objects.all()
+
+    for pub in publicaciones:
+      
+        pub.foto_principal = Fotografia.objects.filter(publicacion=pub).order_by('orden').first()
+
+    return render(request, "administrador/publicaciones.html", {
+        'publicaciones': publicaciones  
+    })
+
+def usuarios(request):
+    usuarios=Usuario.objects.all()
+    return render(request,"administrador/usuariosActivos.html",{'usuarios': usuarios})
+>>>>>>> da08259cbdc0138a9fb067d5655848d04e85b40b
