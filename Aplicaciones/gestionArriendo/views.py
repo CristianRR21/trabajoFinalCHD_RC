@@ -188,5 +188,28 @@ def guardarpublicacion(request):
     return redirect('/')
 
 
+
+
 def misPublicaciones(request):
-    return render(request,"habitaciones/misPublicaciones.html")
+    
+    usuario = Usuario.objects.get(id=request.session['usuario_id'])
+
+    publicaciones = Publicacion.objects.filter(usuario=usuario).select_related('tipohabitacion')
+
+    data = []
+    for pub in publicaciones:
+        foto = Fotografia.objects.filter(publicacion=pub).order_by('orden').first()
+        data.append({
+            'id': pub.id,
+            'titulo': pub.titulo,
+            'precio': pub.precio,
+            'descripcion': pub.descripcion,
+            'tipo': pub.tipohabitacion.nombre,
+            'usuario': pub.usuario.username,
+            'foto_url': foto.imagen.url if foto and foto.imagen else None
+        })
+
+    return render(request, "habitaciones/misPublicaciones.html", {
+        'usuario': usuario,
+        'publicaciones': data
+    })
