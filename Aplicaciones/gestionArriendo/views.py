@@ -238,4 +238,3 @@ def detallesPublicacion(request,id):
         'fotos': fotos
     })
 
-

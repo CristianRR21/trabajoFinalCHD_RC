@@ -25,5 +25,10 @@ urlpatterns = [
     path('detallesPublicacion/<id>',views.detallesPublicacion),
     
     
+ 
+    
+    
+    
+    
     
 ]
