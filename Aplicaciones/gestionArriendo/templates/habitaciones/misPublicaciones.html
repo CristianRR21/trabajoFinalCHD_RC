@@ -28,30 +28,26 @@
           
           {% endif %}
         </div>
-
         <!-- Detalles centrales -->
         <div class="col-md-8 col-12">
           <h4 class="mb-1 text-primary fw-bold">$ {{ pub.precio }} / mes</h4>
           <h5>{{ pub.titulo }}</h5>
           <p class="mb-1"><strong>Tipo:</strong> {{ pub.tipo }}</p>
           <p class="mb-1" style="font-size: 15px;">{{ pub.descripcion|truncatechars:150 }}</p>
-          <p class="mb-0"><strong>Publicado por:</strong> {{ pub.usuario }}</p>
         </div>
 
     
         <div class="col-md-2 col-12 d-flex flex-column align-items-start justify-content-center gap-2 mt-3 mt-md-0">
           
-          <a href="{}" class="btn btn-outline-warning btn-sm w-100" title="Editar publicación">
+          <a href="editarPublicacion/{{pub.id}}" class="btn btn-outline-warning btn-sm w-100" title="Editar publicación">
             ✏️ Editar
+          </a>          
+            <br>
+          <a href="eliminarPublicacion/{{pub.id}}" class="btn btn-outline-warning btn-sm w-100" title="Eliminar publicación">
+            🗑️ Eliminar
           </a>
-
           
-          <form method="POST" action="{}" onsubmit="return confirm('¿Estás seguro de eliminar esta publicación?');">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-outline-danger btn-sm w-100" title="Eliminar publicación">
-              🗑️ Eliminar
-            </button>
-          </form>
+         
         </div>
 
       </div>
