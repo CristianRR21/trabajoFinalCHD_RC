@@ -23,6 +23,7 @@ urlpatterns = [
         
     
     path('detallesPublicacion/<id>',views.detallesPublicacion),
+    #comentario
     path('publicaciones',views.publicaciones),
     path('usuarios',views.usuarios),
     
