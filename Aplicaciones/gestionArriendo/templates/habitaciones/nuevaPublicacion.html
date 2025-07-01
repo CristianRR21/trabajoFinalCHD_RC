@@ -4,7 +4,7 @@
 
 <h1 class="text-center mt-4">Nueva Publicación</h1>
 
-<form method="POST" enctype="multipart/form-data" action="/guardarpublicacion" class="container mt-4">
+<form id= "frm_publicacion" method="POST" enctype="multipart/form-data" action="/guardarpublicacion" class="container mt-4">
     {% csrf_token %}
 
     <div class="mb-3">
@@ -23,21 +23,22 @@
     </div>
 
     <div class="mb-3">
-        <label for="tipohabitacion" class="form-label">Tipo de habitación</label>
+        <label for="tipohabitacion" class="form-label">Tipo de habitación</label><br>
         <select name="tipohabitacion" id="tipohabitacion" class="form-select" >
-            <option value="">---- Seleccione una opción ----</option>
+            <option value="">---- Seleccione una opción ----</option><br>
             {% for tipo in tipos %}
                 <option value="{{ tipo.id }}">{{ tipo.nombre }}</option>
             {% endfor %}
         </select>
-    </div>
+    </div><br>
 
     <div class="mb-3">
         <label for="latitud">Latitud</label>
-        <input type="text" class="form-control" id="latitud" name="latitud" readonly >
+        <input type="text" class="form-control" id="latitud" name="latitud" readonly ><br>
 
         <label for="longitud" class="mt-2">Longitud</label>
-        <input type="text" class="form-control" id="longitud" name="longitud"  readonly>
+        <input type="text" class="form-control" id="longitud" name="longitud"  readonly><br>
+
     </div>
 
       <br><br>
@@ -108,6 +109,82 @@
           }
         );
       }
+</script>
+
+<script>
+    
+        $("#frm_publicacion").validate({
+            rules: {
+                titulo: {
+                    required: true,
+                    minlength: 5,
+                    maxlength: 100
+                },
+                precio: {
+                  required: true,
+                  number: true,
+                  min: 50,
+                  max: 9000,
+                  pattern: /^\d{1,4}(\.\d{1,2})?$/ 
+              },
+                              descripcion: {
+                    required: true,
+                    minlength: 10,
+                    maxlength: 500
+                },
+                tipohabitacion: {
+                    required: true
+                },
+                latitud: {
+                    required: true
+                   
+                },
+                longitud: {
+                    required: true
+                   
+                },
+                "imagenes[]": {
+                    required: true,
+                    extension: "jpg|jpeg|png|webp"
+                }
+            },
+            messages: {
+                titulo: {
+                    required: "Este campo es obligatorio",
+                    minlength: "Debe tener al menos 5 caracteres",
+                    maxlength: "No debe exceder los 100 caracteres"
+                },
+                precio: {
+                required: "Por favor ingrese el precio",
+                number: "Ingrese un número válido",
+                min: "El precio mínimo es $50",
+                max: "El precio máximo permitido es $9,999",
+                pattern: "Ingrese hasta 2 decimales (ej: 8999.99)"
+            },
+
+                descripcion: {
+                    required: "Por favor ingrese una descripción",
+                    minlength: "Debe tener al menos 10 caracteres",
+                    maxlength: "No debe exceder los 500 caracteres"
+                },
+                tipohabitacion: {
+                    required: "Seleccione una opción"
+                },
+                latitud: {
+                    required: "Debe seleccionar la ubicación en el mapa"
+                    
+                },
+                longitud: {
+                    required: "Debe seleccionar la ubicación en el mapa"
+                    
+                },
+                "imagenes[]": {
+                    required: "Debe subir al menos una imagen",
+                    extension: "Solo se permiten archivos JPG, JPEG, PNG o WEBP"
+                }
+            }
+        });
+  
 </script>
 
 

@@ -238,7 +238,7 @@ def detallesPublicacion(request,id):
         'fotos': fotos
     })
 
-
+##comentario
 def publicaciones(request):
     publicaciones = Publicacion.objects.all()
 
