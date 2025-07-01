@@ -292,13 +292,21 @@ def procesarEdicionPublicacion(request):
     publicacion.longitud = longitud
     publicacion.save()
 
-    # Manejo de imágenes
-    for index, imagen in enumerate(nuevas_imagenes, start=1):
-        Fotografia.objects.create(
-            publicacion=publicacion,
-            imagen=imagen,
-            orden=index
-        )
+    if nuevas_imagenes:
+        # Eliminar todas las fotografías existentes
+        fotos_existentes = Fotografia.objects.filter(publicacion=publicacion)
+        for foto in fotos_existentes:
+            if foto.imagen:
+                foto.imagen.delete(save=False)
+            foto.delete()
+        
+        # Crear nuevas fotografías
+        for index, imagen in enumerate(nuevas_imagenes, start=1):
+            Fotografia.objects.create(
+                publicacion=publicacion,
+                imagen=imagen,
+                orden=index
+            )
 
     messages.success(request, "Publicación actualizada correctamente.")
     return redirect('/misPublicaciones')

@@ -67,7 +67,7 @@
 
         <div class="mb-4">
             <label for="imagenes" class="form-label">Agregar nuevas imágenes (opcional)</label>
-            <input id="imagenes" name="imagenes[]" type="file" class="form-control" multiple>
+            <input id="imagenes" name="imagenes[]" type="file" accept="image/*" class="form-control" multiple>
             <div class="form-text">Puede subir hasta 5 imágenes en formato JPG, PNG o WEBP.</div>
         </div>
         <br>
@@ -140,7 +140,7 @@
                 required: true,
                 number: true,
                 min: 50,
-                max: 9000,
+                max: 9999,
                 step:0.01
             },
             descripcion: {
