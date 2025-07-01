@@ -1,70 +1,96 @@
 {% extends 'habitaciones/plantilla.html' %}
 {% block contenido %}
-<br>
-<h1 class="text-center mt-4">Editar Publicación</h1>
 
-<form action="/procesarEdicionPublicacion/" method="POST" enctype="multipart/form-data" class="container mt-4" id="frm_validar">
-    {% csrf_token %}
-    <input type="hidden" name="publicacion_id" value="{{ publicacion.id }}">
-    <div class="mb-3">
-        <label for="titulo" class="form-label">Título</label>
-        <input type="text" name="titulo" id="titulo" class="form-control" value="{{ publicacion.titulo }}">
-    </div>
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Editar Publicación</h1>
 
-    <div class="mb-3">
-        <label for="precio" class="form-label">Precio</label>
-        <input name="precio" id="precio" class="form-control" value="{{ publicacion.precio|floatformat:'f' }}" type="number" step="0.01" min="0">
-    </div>
+    <form id="frm_publicacion" method="POST" enctype="multipart/form-data" action="/procesarEdicionPublicacion/" class="bg-light p-4 rounded shadow-sm">
+        {% csrf_token %}
+        <input type="hidden" name="publicacion_id" value="{{ publicacion.id }}">
+        
+        <div class="mb-3">
+            <label for="titulo" class="form-label">Título</label>
+            <input type="text" name="titulo" id="titulo" class="form-control" value="{{ publicacion.titulo }}">
+        </div>
+        <br>
 
-    <div class="mb-3">
-        <label for="descripcion" class="form-label">Descripción</label>
-        <textarea name="descripcion" id="descripcion" class="form-control" rows="4" >{{ publicacion.descripcion }}</textarea>
-    </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="precio" class="form-label">Precio ($)</label>
+                <input type="number" name="precio" id="precio" class="form-control" value="{{ publicacion.precio|floatformat:'f' }}" min="50" step="0.01">
+            </div>
 
-    <div class="mb-3">
-        <label for="tipohabitacion" class="form-label">Tipo de habitación</label>
-        <select name="tipohabitacion" id="tipohabitacion" class="form-select" >
-            <option value="">---- Seleccione una opción ----</option>
-            {% for tipo in tipos %}
-                <option value="{{ tipo.id }}" {% if tipo.id == publicacion.tipohabitacion.id %}selected{% endif %}>
-                    {{ tipo.nombre }}
-                </option>
+            <div class="col-md-6 mb-3">
+                <label for="tipohabitacion" class="form-label">Tipo de habitación</label><br>
+                <select name="tipohabitacion" id="tipohabitacion" class="form-select">
+                    <option value="">---- Seleccione una opción ----</option>
+                    {% for tipo in tipos %}
+                        <option value="{{ tipo.id }}" {% if tipo.id == publicacion.tipohabitacion.id %}selected{% endif %}>
+                            {{ tipo.nombre }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <br>
+
+        <div class="mb-3">
+            <label for="descripcion" class="form-label">Descripción</label>
+            <textarea name="descripcion" id="descripcion" class="form-control" rows="4">{{ publicacion.descripcion }}</textarea>
+        </div>
+        <br>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="latitud" class="form-label">Latitud</label>
+                <input type="text" class="form-control" id="latitud" name="latitud" value="{{ publicacion.latitud }}" readonly>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="longitud" class="form-label">Longitud</label>
+                <input type="text" class="form-control" id="longitud" name="longitud" value="{{ publicacion.longitud }}" readonly>
+            </div>
+        </div>
+        <br>
+
+        <div class="mb-4">
+            <label class="form-label">Ubicación en el mapa</label>
+            <div id="mapa_cliente" style="border:1px solid #ccc; height:300px; width:100%; border-radius:8px;"></div>
+        </div>
+        <br>
+
+        <label class="mt-3">Imágenes actuales:</label>
+        <div class="d-flex flex-wrap gap-2 mb-3">
+            {% for foto in fotos %}
+                <img src="{{ foto.imagen.url }}" style="width: 100px; height: 100px; object-fit: cover;" class="border rounded">
             {% endfor %}
-        </select>
-    </div>
+        </div>
 
-    <div class="mb-3">
-        <label for="latitud">Latitud</label>
-        <input type="text" class="form-control" id="latitud" name="latitud" value="{{ publicacion.latitud }}" readonly>
+        <div class="mb-4">
+            <label for="imagenes" class="form-label">Agregar nuevas imágenes (opcional)</label>
+            <input id="imagenes" name="imagenes[]" type="file" class="form-control" multiple>
+            <div class="form-text">Puede subir hasta 5 imágenes en formato JPG, PNG o WEBP.</div>
+        </div>
+        <br>
 
-        <label for="longitud" class="mt-2">Longitud</label>
-        <input type="text" class="form-control" id="longitud" name="longitud" value="{{ publicacion.longitud }}" readonly>
-    </div>
+        <div class="d-flex justify-content-center gap-4 mt-4">
+            <button type="submit" class="btn btn-success btn-lg px-4">Guardar Cambios</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="/misPublicaciones" class="btn btn-danger btn-lg px-4">Cancelar</a>
+        </div>
+    </form>
+</div>
 
-    <br><br>
-    <div class="" id="mapa_cliente" style="border:1px solid black; height:300px; width:100%"></div>
-
-    <!-- Mostrar imágenes existentes (opcional) -->
-    <label class="mt-3">Imágenes actuales:</label>
-    <div class="d-flex flex-wrap gap-2 mb-3">
-        {% for foto in fotos %}
-            <img src="{{ foto.imagen.url }}" style="width: 100px; height: 100px; object-fit: cover;" class="border rounded">
-        {% endfor %}
-    </div>
-
-    <label for="imagenes">Agregar nuevas imágenes (opcional)</label>
-    <div>
-        <input id="imagenes" name="imagenes[]" type="file" multiple accept="image/*">
-    </div>
-
-    <br><br>
-
-    <div class="text-end mt-3">
-        <button type="submit" class="btn btn-success">Guardar Cambios</button> &nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="/misPublicaciones" class="btn btn-secondary">Cancelar</a>
-    </div>
-
-</form>
+<script>
+    $("#imagenes").fileinput({
+        language: "es",
+        allowedFileExtensions: ["jpg", "jpeg", "png"],
+        showCaption: false,
+        dropZoneEnabled: true,
+        showClose: false,
+        maxFileCount: 5,
+        browseClass: "btn btn-primary",
+        msgPlaceholder: "Selecciona hasta 5 imágenes..."
+    });
+</script>
 
 <script>
     function initMap() {
@@ -76,7 +102,7 @@
             document.getElementById('mapa_cliente'),
             {
                 center: latitud_longitud,
-                zoom: 15,  // Mayor zoom para precisión
+                zoom: 15,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             }
         );
@@ -97,68 +123,70 @@
             }
         );
     }
-    // CARGAR SIEMPRE EL MAPA
     window.onload = function() {
         initMap();
     };    
 </script>
 
-
 <script>
-    $("#imagenes").fileinput({
-        language: "es",
-        allowedFileExtensions: ["jpg", "jpeg", "png"],
-        showCaption: false,
-        dropZoneEnabled: true,
-        showClose: false,
-        maxFileCount: 5,
-        browseClass: "btn btn-primary",
-        msgPlaceholder: "Selecciona hasta 5 imágenes..."
+    $("#frm_publicacion").validate({
+        rules: {
+            titulo: {
+                required: true,
+                minlength: 5,
+                maxlength: 100
+            },
+            precio: {
+                required: true,
+                number: true,
+                min: 50,
+                max: 9000,
+                step:0.01
+            },
+            descripcion: {
+                required: true,
+                minlength: 10,
+                maxlength: 500
+            },
+            tipohabitacion: {
+                required: true
+            },
+            latitud: {
+                required: true
+            },
+            longitud: {
+                required: true
+            }
+        },
+        messages: {
+            titulo: {
+                required: "Este campo es obligatorio",
+                minlength: "Debe tener al menos 5 caracteres",
+                maxlength: "No debe exceder los 100 caracteres"
+            },
+            precio: {
+                required: "Por favor ingrese el precio",
+                number: "Ingrese un número válido",
+                min: "El precio mínimo es $50",
+                max: "El precio máximo permitido es $9,999",
+                step: "Ingrese un número válido con dos decimales"
+            },
+            descripcion: {
+                required: "Por favor ingrese una descripción",
+                minlength: "Debe tener al menos 10 caracteres",
+                maxlength: "No debe exceder los 500 caracteres"
+            },
+            tipohabitacion: {
+                required: "Seleccione una opción"
+            },
+            latitud: {
+                required: "Debe seleccionar la ubicación en el mapa"
+            },
+            longitud: {
+                required: "Debe seleccionar la ubicación en el mapa"
+            }
+        }
     });
 </script>
-<script>
-    $("#frm_validar").validate(
-        {
-            rules:{
-                titulo:{
-                    required: true,
-                    minlength: 5,
-                    maxlength: 100
-                },
-                precio:{
-                    required: true,
-                    min: 50,
-                    max: 9000,
-                    step: 0.01,
-                    Number: true
-                },
-                descripcion:{
-                    required: true,
-                    minlength: 10,
-                    maxlength: 500
-                },
-            },
-            messages:{
-                titulo:{
-                    required: "El titulo es obligatorio",
-                    minlength: "El titulo debe tener al menos 3 caracteres",
-                    maxlength: "El titulo no puede tener más de 255 caracteres"
-                },
-                precio:{
-                    required: "El precio es obligatorio",
-                    min: "El precio debe ser mayor o igual a 50",
-                    max: "El precio no puede ser mayor a 9000",
-                    step: "El precio debe ser un número de 2 decimales",
-                    Number: "Ingrese un número válido"
-                },
-                descripcion:{
-                    required: "La descripción es obligatorio",
-                    minlength: "La descripción debe tener al menos 10 caracteres",
-                    maxlength: "La descripción no puede tener más de 500 caracteres"
-                },
-            }
-        });
-</script>
 
-<br>
 {% endblock %}
