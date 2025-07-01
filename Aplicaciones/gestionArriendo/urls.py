@@ -27,9 +27,9 @@ urlpatterns = [
     path('publicaciones',views.publicaciones),
     path('usuarios',views.usuarios),
     
- 
-    
-    
+    #editarPublicacion
+    path('editarPublicacion/<id>/', views.editarPublicacion),
+    path('procesarEdicionPublicacion/', views.procesarEdicionPublicacion),
     
     
     

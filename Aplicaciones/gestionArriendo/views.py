@@ -252,3 +252,55 @@ def publicaciones(request):
 def usuarios(request):
     usuarios = Usuario.objects.all()
     return render(request, "administrador/usuariosActivos.html", {'usuarios': usuarios})
+
+#region EDITAR PUBLICACION
+def editarPublicacion(request, id):
+    publicacion = Publicacion.objects.get(id=id, usuario_id=request.session['usuario_id'])
+    tipos = TipoHabitacion.objects.all()
+    fotos = Fotografia.objects.filter(publicacion=publicacion).order_by('orden')
+        
+    return render(request, "habitaciones/editarPublicacion.html", {
+        'publicacion': publicacion,
+        'tipos': tipos,
+        'fotos': fotos
+    })
+
+def procesarEdicionPublicacion(request):
+    
+    publicacion_id = request.POST.get('publicacion_id')
+    titulo = request.POST.get('titulo')
+    precio = request.POST.get('precio').replace(',', '.')
+    descripcion = request.POST.get('descripcion')
+    tipo_id = request.POST.get('tipohabitacion')
+    latitud = request.POST.get('latitud').replace(',', '.')
+    longitud = request.POST.get('longitud').replace(',', '.')
+    nuevas_imagenes = request.FILES.getlist('imagenes[]')
+
+    # Obtener la publicación (con validación de propiedad)
+    publicacion = Publicacion.objects.get(
+    id=publicacion_id,
+    usuario_id=request.session['usuario_id']
+    )
+    tipo = TipoHabitacion.objects.get(id=tipo_id)
+
+    # Actualizar campos
+    publicacion.titulo = titulo
+    publicacion.precio = precio
+    publicacion.descripcion = descripcion
+    publicacion.tipohabitacion = tipo
+    publicacion.latitud = latitud
+    publicacion.longitud = longitud
+    publicacion.save()
+
+    # Manejo de imágenes
+    for index, imagen in enumerate(nuevas_imagenes, start=1):
+        Fotografia.objects.create(
+            publicacion=publicacion,
+            imagen=imagen,
+            orden=index
+        )
+
+    messages.success(request, "Publicación actualizada correctamente.")
+    return redirect('/misPublicaciones')
+
+#endregion
