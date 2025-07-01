@@ -61,8 +61,8 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.4/js/locales/es.min.js"></script>
 
-
-
+<!-- IMPORTANDO FONT AWESOME-->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
 
 
     
@@ -122,10 +122,32 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a class="active" href="/habitaciones">habitaciones</a></li>
-                    <li><a href="/misPublicaciones">Mis publicaciones</a></li>
-                    <li><a href="">Mis comentarios</a></li>
-                    <li><a href="">Favoritos</a></li>
+                        <li>
+                        <a class="active d-flex align-items-center" href="/habitaciones">
+                            <i class="fas fa-bed me-2"></i> Habitaciones
+                        </a>
+                        </li>
+                        <li>
+                        <a class="d-flex align-items-center" href="/misPublicaciones">
+                            <i class="fas fa-list-alt me-2"></i> Mis publicaciones
+                        </a>
+                        </li>
+                        <li>
+                        <a class="d-flex align-items-center" href="#">
+                            <i class="fas fa-comments me-2"></i> Mis comentarios
+                        </a>
+                        </li>
+                        <li>
+                        <a class="d-flex align-items-center" href="#">
+                            <i class="fas fa-heart me-2"></i> Favoritos
+                        </a>
+                        </li>
+                        <li>
+                        <a class="d-flex align-items-center" href="/nuevaPublicacion">
+                            <i class="fas fa-plus-circle me-2"></i> Nueva Publicación
+                        </a>
+                        </li>
+
 
                     <li class="social-links"><a href="#"><i class="fa fa-twitter global-radius"></i></a></li>
                     <li class="social-links"><a href="#"><i class="fa fa-facebook global-radius"></i></a></li>
@@ -195,9 +217,11 @@
 			</div>
 		</div>
 	</div>
+    <br>
 	
          {%block contenido %}
         {%endblock %}
+        <br>
     </div>
 
      <footer class="footer">
@@ -300,6 +324,7 @@
 
 </body>
 </html>
+
  <style>
       .error{
         color: red;
