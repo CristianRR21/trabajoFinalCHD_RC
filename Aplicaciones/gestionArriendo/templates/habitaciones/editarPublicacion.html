@@ -63,49 +63,7 @@
         <button type="submit" class="btn btn-success">Guardar Cambios</button> &nbsp;&nbsp;&nbsp;&nbsp;
         <a href="/misPublicaciones" class="btn btn-secondary">Cancelar</a>
     </div>
-    <script>
-    $("#frm_validar").validate(
-        {
-            rules:{
-                titulo:{
-                    required: true,
-                    minlength: 3,
-                    maxlength: 255
-                },
-                precio:{
-                    required: true,
-                    min: 0,
-                    max: 10000,
-                    step: 0.01,
-                    Number: true
-                },
-                descripcion:{
-                    required: true,
-                    minlength: 3,
-                    maxlength: 500
-                },
-            },
-            messages:{
-                titulo:{
-                    required: "El titulo es obligatorio",
-                    minlength: "El titulo debe tener al menos 3 caracteres",
-                    maxlength: "El titulo no puede tener más de 255 caracteres"
-                },
-                precio:{
-                    required: "El precio es obligatorio",
-                    min: "El precio debe ser mayor o igual a 0",
-                    max: "El precio no puede ser mayor a 10000",
-                    step: "El precio debe ser un número de 2 decimales",
-                    Number: "Ingrese un número válido"
-                },
-                descripcion:{
-                    required: "La descripción es obligatorio",
-                    minlength: "La descripción debe tener al menos 3 caracteres",
-                    maxlength: "La descripción no puede tener más de 500 caracteres"
-                },
-            }
-        });
-</script>
+
 </form>
 
 <script>
@@ -158,5 +116,49 @@
         msgPlaceholder: "Selecciona hasta 5 imágenes..."
     });
 </script>
+<script>
+    $("#frm_validar").validate(
+        {
+            rules:{
+                titulo:{
+                    required: true,
+                    minlength: 5,
+                    maxlength: 100
+                },
+                precio:{
+                    required: true,
+                    min: 50,
+                    max: 9000,
+                    step: 0.01,
+                    Number: true
+                },
+                descripcion:{
+                    required: true,
+                    minlength: 10,
+                    maxlength: 500
+                },
+            },
+            messages:{
+                titulo:{
+                    required: "El titulo es obligatorio",
+                    minlength: "El titulo debe tener al menos 3 caracteres",
+                    maxlength: "El titulo no puede tener más de 255 caracteres"
+                },
+                precio:{
+                    required: "El precio es obligatorio",
+                    min: "El precio debe ser mayor o igual a 50",
+                    max: "El precio no puede ser mayor a 9000",
+                    step: "El precio debe ser un número de 2 decimales",
+                    Number: "Ingrese un número válido"
+                },
+                descripcion:{
+                    required: "La descripción es obligatorio",
+                    minlength: "La descripción debe tener al menos 10 caracteres",
+                    maxlength: "La descripción no puede tener más de 500 caracteres"
+                },
+            }
+        });
+</script>
+
 <br>
 {% endblock %}
