@@ -3,9 +3,9 @@
 {% block contenido %}
 
 
-<h4>Bienvenido:{{ usuario.first_name }} {{ usuario.last_name }}</h4>
 
-<a href="/nuevaPublicacion" class="btn btn-success">Nueva Publicacion</a>
+
+<!--<a href="/nuevaPublicacion" class="btn btn-success">Nueva Publicacion</a> !-->
 
 
 <style>
@@ -48,12 +48,30 @@
         </div>
 
         <!-- Precio y botón a la derecha -->
-  <div class="col-md-2 col-12 d-flex align-items-center justify-content-start mt-2 mt-md-0">            
-            <span class="btn btn-outline-primary " 
-                role="button" 
-                data-publicacion-id="{{ pub.id }}"               
-                style="font-size: 20px;">  ⭐
-            </span>
+  <div class="col-md-2 col-12 d-flex align-items-center justify-content-start mt-2 mt-md-0">    
+    
+    
+<span class="btn btn-outline-primary d-flex align-items-center justify-content-center"
+      role="button"
+      data-publicacion-id="{{ pub.id }}"
+      style="
+        font-size: 20px;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        cursor: pointer;
+        border-color: #0d6efd; /* azul bootstrap */
+        color:#a8cf45; /* verde bootstrap */
+        transition: background-color 0.3s, color 0.3s;
+      "
+      aria-label="Agregar a favoritos"
+      title="Agregar a favoritos">
+    <i class="fas fa-star"></i>
+</span>
+
+
+
+              
         </div>
 
       </div>

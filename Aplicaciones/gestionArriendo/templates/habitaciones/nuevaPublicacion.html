@@ -2,63 +2,73 @@
 
 {% block contenido %}
 
-<h1 class="text-center mt-4">Nueva Publicación</h1>
 
-<form id= "frm_publicacion" method="POST" enctype="multipart/form-data" action="/guardarpublicacion" class="container mt-4">
-    {% csrf_token %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Nueva Publicación</h1>
 
-    <div class="mb-3">
-        <label for="titulo" class="form-label">Título</label>
-        <input type="text" name="titulo" id="titulo" class="form-control" >
-    </div>
+    <form id="frm_publicacion" method="POST" enctype="multipart/form-data" action="/guardarpublicacion" class="bg-light p-4 rounded shadow-sm">
+        {% csrf_token %}
 
-    <div class="mb-3">
-        <label for="precio" class="form-label">Precio</label>
-        <input name="precio" id="precio" class="form-control" >
-    </div>
+        <div class="mb-3">
+            <label for="titulo" class="form-label">Título</label>
+            <input type="text" name="titulo" id="titulo" class="form-control" placeholder="Ej: Habitación con baño privado">
+        </div>
+        <br>
 
-    <div class="mb-3">
-        <label for="descripcion" class="form-label">Descripción</label>
-        <textarea name="descripcion" id="descripcion" class="form-control" rows="4" ></textarea>
-    </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="precio" class="form-label">Precio ($)</label>
+                <input type="number" name="precio" id="precio" class="form-control" min="50" step="0.01" placeholder="Ej: 250.00">
+            </div>
 
-    <div class="mb-3">
-        <label for="tipohabitacion" class="form-label">Tipo de habitación</label><br>
-        <select name="tipohabitacion" id="tipohabitacion" class="form-select" >
-            <option value="">---- Seleccione una opción ----</option><br>
-            {% for tipo in tipos %}
-                <option value="{{ tipo.id }}">{{ tipo.nombre }}</option>
-            {% endfor %}
-        </select>
-    </div><br>
+            <div class="col-md-6 mb-3">
+                <label for="tipohabitacion" class="form-label">Tipo de habitación</label><br>
+                <select name="tipohabitacion" id="tipohabitacion" class="form-select">
+                    <option value="">---- Seleccione una opción ----</option>
+                    {% for tipo in tipos %}
+                        <option value="{{ tipo.id }}">{{ tipo.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <br>
 
-    <div class="mb-3">
-        <label for="latitud">Latitud</label>
-        <input type="text" class="form-control" id="latitud" name="latitud" readonly ><br>
+        <div class="mb-3">
+            <label for="descripcion" class="form-label">Descripción</label>
+            <textarea name="descripcion" id="descripcion" class="form-control" rows="4" placeholder="Describa los detalles importantes de la habitación..."></textarea>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="latitud" class="form-label">Latitud</label>
+                <input type="text" class="form-control" id="latitud" name="latitud" readonly>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="longitud" class="form-label">Longitud</label>
+                <input type="text" class="form-control" id="longitud" name="longitud" readonly>
+            </div>
+        </div>
+          <br>
+        <div class="mb-4">
+            <label class="form-label">Ubicación en el mapa</label>
+            <div id="mapa_cliente" style="border:1px solid #ccc; height:300px; width:100%; border-radius:8px;"></div>
+        </div>
+          <br>
+        <div class="mb-4">
+            <label for="imagenes" class="form-label">Imágenes de su habitación</label>
+            <input id="imagenes" name="imagenes[]" type="file" class="form-control" multiple>
+            <div class="form-text">Puede subir hasta 5 imágenes en formato JPG, PNG o WEBP.</div>
+        </div>
+        <br>
 
-        <label for="longitud" class="mt-2">Longitud</label>
-        <input type="text" class="form-control" id="longitud" name="longitud"  readonly><br>
+      <div class="d-flex justify-content-center gap-4 mt-4">
+          <button type="submit" class="btn btn-success btn-lg px-4">Publicar</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-    </div>
-
-      <br><br>
-    <div class="" id="mapa_cliente" style="border:1px solid black; height:300px;
-    width:100%"> </div>
-
-    <label for="imagenes">Subir imágenes</label>
-    <div>
-        <input id="imagenes" name="imagenes[]" type="file" multiple>
-    </div>
-
-    <br><br>
-
-    <div class="text-end mt-3">
-        <button type="submit" class="btn btn-success">Publicar</button> &nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="/habitaciones">Cancelar</a>
-    </div>
-
-</form>
-
+          <a href="/habitaciones" class="btn btn-danger btn-lg px-4">Cancelar</a>
+          
+      </div>
+    </form>
+</div>
 
 <script>
 
