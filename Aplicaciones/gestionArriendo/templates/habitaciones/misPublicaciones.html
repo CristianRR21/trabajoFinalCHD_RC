@@ -14,6 +14,7 @@
   
 </style>
 <div id="contenedor-publicaciones" class="container mt-4">
+  <a href="/nuevaPublicacion" class="btn btn-success md-4">Nueva Publicacion</a><br><br>
   {% if publicaciones %}
     {% for pub in publicaciones %}
     <div class="tarjeta-publicacion mb-4">
@@ -43,11 +44,28 @@
             ✏️ Editar
           </a>          
             <br>
-          <a href="eliminarPublicacion/{{pub.id}}" class="btn btn-outline-warning btn-sm w-100" title="Eliminar publicación">
+          <a href="#" class="btn btn-outline-warning btn-sm w-100" title="Eliminar publicación" onclick="confirmarEliminacion('/eliminarPublicacion/{{pub.id}}')">
             🗑️ Eliminar
           </a>
           
-         
+          <script>
+                function confirmarEliminacion(url){
+                    Swal.fire({
+                        title: '¿Estás seguro?',
+                        text: '¡Esta acción no se puede deshacer!',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Sí, eliminar',
+                        cancelButtonText: 'Cancelar'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = url;
+                            }
+                        });
+                    }
+                </script>
         </div>
 
       </div>

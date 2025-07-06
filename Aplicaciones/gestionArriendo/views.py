@@ -252,10 +252,65 @@ def publicaciones(request):
 def usuarios(request):
     usuarios = Usuario.objects.all()
     return render(request, "administrador/usuariosActivos.html", {'usuarios': usuarios})
-
-def favoritos(request,id):
-    publi=Publicacion.objects.get(id=id)
+def favoritos(request, id):
+    publi = Publicacion.objects.get(id=id)
     usuario = Usuario.objects.get(id=request.session['usuario_id'])
-    messages.success(request,"Añadido exitosamente")  
-    favorito=Favorito.objects.create(usuario=usuario,publicacion=publi)  
+    messages.success(request, "Añadido exitosamente")  
+    favorito = Favorito.objects.create(usuario=usuario, publicacion=publi)  
     return redirect('/habitaciones')
+
+
+# region EDITAR PUBLICACION
+def editarPublicacion(request, id):
+    publicacion = Publicacion.objects.get(id=id, usuario_id=request.session['usuario_id'])
+    tipos = TipoHabitacion.objects.all()
+    fotos = Fotografia.objects.filter(publicacion=publicacion).order_by('orden')
+        
+    return render(request, "habitaciones/editarPublicacion.html", {
+        'publicacion': publicacion,
+        'tipos': tipos,
+        'fotos': fotos
+    })
+
+def procesarEdicionPublicacion(request):
+    publicacion_id = request.POST.get('publicacion_id')
+    titulo = request.POST.get('titulo')
+    precio = request.POST.get('precio').replace(',', '.')
+    descripcion = request.POST.get('descripcion')
+    tipo_id = request.POST.get('tipohabitacion')
+    latitud = request.POST.get('latitud').replace(',', '.')
+    longitud = request.POST.get('longitud').replace(',', '.')
+
+    nuevas_imagenes = request.FILES.getlist('imagenes[]')
+
+    publicacion = Publicacion.objects.get(
+        id=publicacion_id,
+        usuario_id=request.session['usuario_id']
+    )
+    tipo = TipoHabitacion.objects.get(id=tipo_id)
+
+    publicacion.titulo = titulo
+    publicacion.precio = precio
+    publicacion.descripcion = descripcion
+    publicacion.tipohabitacion = tipo
+    publicacion.latitud = latitud
+    publicacion.longitud = longitud
+    publicacion.save()
+
+    if nuevas_imagenes:
+        fotos_existentes = Fotografia.objects.filter(publicacion=publicacion)
+        for foto in fotos_existentes:
+            if foto.imagen:
+                foto.imagen.delete(save=False)
+            foto.delete()
+        
+        for index, imagen in enumerate(nuevas_imagenes, start=1):
+            Fotografia.objects.create(
+                publicacion=publicacion,
+                imagen=imagen,
+                orden=index
+            )
+
+    messages.success(request, "Publicación actualizada correctamente.")
+    return redirect('/misPublicaciones')
+# endregion
