@@ -26,7 +26,7 @@ urlpatterns = [
     #comentario
     path('publicaciones',views.publicaciones),
     path('usuarios',views.usuarios),
-    
+    path('favoritos/<id>',views.favoritos),
  
     
     

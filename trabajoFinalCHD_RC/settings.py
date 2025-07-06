@@ -90,6 +90,8 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+#bdd david
 '''
 DATABASES = {
     'default': {

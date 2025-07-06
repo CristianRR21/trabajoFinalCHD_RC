@@ -3,7 +3,7 @@ from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.hashers import check_password
-from .models import Usuario,TipoHabitacion,Publicacion,Fotografia
+from .models import Usuario,TipoHabitacion,Publicacion,Fotografia,Favorito
 from django.contrib.auth.hashers import make_password
 
 # Create your views here.
@@ -252,3 +252,10 @@ def publicaciones(request):
 def usuarios(request):
     usuarios = Usuario.objects.all()
     return render(request, "administrador/usuariosActivos.html", {'usuarios': usuarios})
+
+def favoritos(request,id):
+    publi=Publicacion.objects.get(id=id)
+    usuario = Usuario.objects.get(id=request.session['usuario_id'])
+    messages.success(request,"Añadido exitosamente")  
+    favorito=Favorito.objects.create(usuario=usuario,publicacion=publi)  
+    return redirect('/habitaciones')
