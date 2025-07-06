@@ -3,7 +3,7 @@ from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.hashers import check_password
-from .models import Usuario,TipoHabitacion,Publicacion,Fotografia,Favorito,ComentarioPublicacion
+from .models import Usuario,TipoHabitacion,Publicacion,Fotografia,Favorito,ComentarioPublicacion,Calificacion
 from django.contrib.auth.hashers import make_password
 
 # Create your views here.
@@ -267,6 +267,14 @@ def guardarComentario(request, id):
     comentario = ComentarioPublicacion.objects.create(publicacion=publi,usuario=usuario,texto=comentario)  
     return redirect('/habitaciones')
 
+
+def calificarPublicacion(request, id):
+    publi = Publicacion.objects.get(id=id)
+    usuario = Usuario.objects.get(id=request.session['usuario_id'])
+    puntuacion=request.POST.get('calificacion')
+    messages.success(request, "Calificado exitosamente")  
+    puntuacion = Calificacion.objects.create(usuario=usuario,publicacion=publi,puntuacion=puntuacion)  
+    return redirect('/habitaciones')
 
 # region EDITAR PUBLICACION
 def editarPublicacion(request, id):

@@ -47,8 +47,21 @@
   </form>
 
   <h1>CALIFICAR ESCALA 1-5 </h1>
-  <h1>{{ publicacion.latitud }}</h1>
-  <h1>{{ publicacion.longitud }}</h1>
+
+<form action="/calificarPublicacion/{{publicacion.id}}/" method="post" id="frm_calificacion">
+    {% csrf_token %}
+    <label for="calificacion">Selecciona una calificación:</label>
+    <select id="calificacion" name="calificacion" required>
+        <option value="" disabled selected>-- Escoge --</option>
+        <option value="1">1 - Muy malo</option>
+        <option value="2">2 - Malo</option>
+        <option value="3">3 - Regular</option>
+        <option value="4">4 - Bueno</option>
+        <option value="5">5 - Excelente</option>
+    </select>
+    <button type="submit">Enviar Calificación</button>
+</form>
+
 </div>
  
 

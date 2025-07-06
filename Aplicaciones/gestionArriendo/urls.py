@@ -30,6 +30,8 @@ urlpatterns = [
     path('editarPublicacion/<id>/', views.editarPublicacion),
     path('procesarEdicionPublicacion/', views.procesarEdicionPublicacion),
     path('guardarComentario/<id>/',views.guardarComentario),
+    path('calificarPublicacion/<id>/',views.calificarPublicacion),
+    
     
     
 
