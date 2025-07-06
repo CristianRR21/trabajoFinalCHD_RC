@@ -26,18 +26,11 @@ urlpatterns = [
     #comentario
     path('publicaciones',views.publicaciones),
     path('usuarios',views.usuarios),
-<<<<<<< HEAD
     path('favoritos/<id>',views.favoritos),
- 
-    
-    
-=======
-    
-    #editarPublicacion
     path('editarPublicacion/<id>/', views.editarPublicacion),
     path('procesarEdicionPublicacion/', views.procesarEdicionPublicacion),
->>>>>>> fa87becedbdd9351d96ac792346f1df345814544
     
+
     
     
 ]
