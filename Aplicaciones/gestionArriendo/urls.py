@@ -29,6 +29,8 @@ urlpatterns = [
     path('favoritos/<id>',views.favoritos),
     path('editarPublicacion/<id>/', views.editarPublicacion),
     path('procesarEdicionPublicacion/', views.procesarEdicionPublicacion),
+    path('guardarComentario/<id>/',views.guardarComentario),
+    
     
 
     

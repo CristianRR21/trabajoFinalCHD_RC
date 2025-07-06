@@ -37,8 +37,15 @@
 
 
 
+
  <br><br>
   <h1>COMENTAR</h1>
+  <form action="/guardarComentario/{{publicacion.id}}/"  method="post" id="frm_comentario">
+       {% csrf_token %}
+  <textarea id="comentario" name="comentario" rows="5" cols="50"></textarea>
+  <button type="submit">Enviar</button>
+  </form>
+
   <h1>CALIFICAR ESCALA 1-5 </h1>
   <h1>{{ publicacion.latitud }}</h1>
   <h1>{{ publicacion.longitud }}</h1>
