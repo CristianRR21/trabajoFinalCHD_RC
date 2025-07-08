@@ -75,12 +75,10 @@ def iniciarSesion(request):
                     messages.error(request, "Usuario bloqueado.")
                     return render(request, 'login/login.html')
 
-                # Guardar sesión AQUI ES DONDE YA MANEJO EL REGISTRO DE DATOS PARA LA SESSION
                 request.session['usuario_id'] = usuario.id
                 request.session['usuario_rol'] = usuario.rol
                 request.session['usuario_email'] = usuario.email
 
-                # Mostrar directamente la plantilla correspondiente
                 if usuario.rol == 'Administrador':
                     return redirect('/administrador')
                 elif usuario.rol in ['Arrendador', 'Arrendatario']:
@@ -111,8 +109,8 @@ def registrarUsuario(request):
         password2 = request.POST.get('password2')
         telefono = request.POST.get('telefono')
         direccion = request.POST.get('direccion')
-        first_name = request.POST.get('first_name')  # para nombres
-        last_name = request.POST.get('last_name')    # para apellidos
+        first_name = request.POST.get('first_name')  
+        last_name = request.POST.get('last_name')    
 
         if password != password2:
             messages.error(request, "Las contraseñas no coinciden.")
@@ -215,6 +213,16 @@ def misPublicaciones(request):
     })
 
 
+def misFavoritos(request):
+    usuario = Usuario.objects.get(id=request.session['usuario_id'])
+    favoritos = Favorito.objects.filter(usuario=usuario).select_related('publicacion')
+
+    
+
+    return render(request, "habitaciones/misFavoritos.html", {
+        'usuario': usuario,
+        'favoritos': favoritos
+    })
 
 def eliminarPublicacion(request,id):
     publi=Publicacion.objects.get(id=id)  

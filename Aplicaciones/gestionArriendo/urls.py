@@ -31,6 +31,7 @@ urlpatterns = [
     path('procesarEdicionPublicacion/', views.procesarEdicionPublicacion),
     path('guardarComentario/<id>/',views.guardarComentario),
     path('calificarPublicacion/<id>/',views.calificarPublicacion),
+    path('misFavoritos',views.misFavoritos),
     
     
     
