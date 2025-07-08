@@ -233,6 +233,12 @@ def eliminarPublicacion(request,id):
             foto.delete()
     publi.delete()
     return redirect('/misPublicaciones')
+
+def eliminarFavorito(request,id):
+    fav=Favorito.objects.get(id=id)      
+    fav.delete()
+    return redirect('/misFavoritos')
+
    
 
 
