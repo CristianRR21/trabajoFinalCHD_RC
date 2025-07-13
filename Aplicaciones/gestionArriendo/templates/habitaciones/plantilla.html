@@ -2,336 +2,241 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <!-- Basic -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">   
-   
-    <!-- Mobile Metas -->
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
- 
-     <!-- Site Metas -->
-    <title>CITY Real Estate - Responsive HTML5 Landing Page</title>  
-    <meta name="keywords" content="">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
+  <!-- Site Metas -->
+  <title>CITY Real Estate - Responsive HTML5 Landing Page</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-       
-    
-    <!-- IMPORTACION DE JQUERY-- LIBREIR A DE JAVASCRIPT-->
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="{% static 'plantilla/habitaciones/images/favicon.ico' %}" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="{% static 'plantilla/habitaciones/images/apple-touch-icon.png' %}">
 
-    <!-- IMPORTANDO JQUERY VALIDATE-->
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.js"></script>
-     
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="{% static 'plantilla/habitaciones/css/bootstrap.min.css' %}">
 
-<!-- sweatalert2 -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Site CSS -->
+  <link rel="stylesheet" href="{% static 'plantilla/habitaciones/style.css' %}">
+  <link rel="stylesheet" href="{% static 'plantilla/habitaciones/css/colors.css' %}">
+  <link rel="stylesheet" href="{% static 'plantilla/habitaciones/css/versions.css' %}">
+  <link rel="stylesheet" href="{% static 'plantilla/habitaciones/css/responsive.css' %}">
+  <link rel="stylesheet" href="{% static 'plantilla/habitaciones/css/custom.css' %}">
 
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
 
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.2.3/css/buttons.dataTables.min.css">
 
-<!-- DataTables CSS y JS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
-    <script src="https://cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>
+  <!-- Drag & Drop CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.4/css/fileinput.min.css" integrity="sha512-yDVMONIXJPPAoULZ92Ygngsn8ZUGB4ejm6fCc6q9ZvdH8blFAOgg75XZSEaAJ5m4E/yPI1BAi5fF2axMHVuZ5w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <!-- Librerías para exportación -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.2.3/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.print.min.js"></script>
+  <!-- Modernizer JS -->
+  <script src="{% static 'plantilla/habitaciones/js/modernizer.js' %}"></script>
 
-    <!-- CSS para los botones -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.2.3/css/buttons.dataTables.min.css">
-<!-- Traducción al español -->
-<script>
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+  <!-- jQuery Validate -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.js"></script>
+
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- DataTables JS -->
+  <script src="https://cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+  <script src="https://cdn.datatables.net/buttons/3.2.3/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.html5.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.print.min.js"></script>
+
+  <!-- Drag & Drop JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.4/js/fileinput.min.js" integrity="sha512-0wQvB58Ha5coWmcgtg4f11CTSSxfrfLClUp9Vy0qhzYzCZDSnoB4Vhu5JXJFs7rU24LE6JsH+6hpP7vQ22lk5w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.4/js/locales/es.min.js"></script>
+
+  <!-- DataTables español -->
+  <script>
     DataTable.defaults.language = {
-        url: 'https://cdn.datatables.net/plug-ins/2.0.7/i18n/es-ES.json'
+      url: 'https://cdn.datatables.net/plug-ins/2.0.7/i18n/es-ES.json'
     };
-</script>
+  </script>
 
-<!-- IMPORTANDO drag and drop-->
+  <!-- Google Maps API -->
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBPMAF9GQ1RsZognLTwwb7kYiT8SAfNZHo&callback=initMap"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.4/js/fileinput.min.js" integrity="sha512-0wQvB58Ha5coWmcgtg4f11CTSSxfrfLClUp9Vy0qhzYzCZDSnoB4Vhu5JXJFs7rU24LE6JsH+6hpP7vQ22lk5w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.4/css/fileinput.min.css" integrity="sha512-yDVMONIXJPPAoULZ92Ygngsn8ZUGB4ejm6fCc6q9ZvdH8blFAOgg75XZSEaAJ5m4E/yPI1BAi5fF2axMHVuZ5w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-<!-- IMPORTANDO drag and drop IDIOMA-->
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.4/js/locales/es.min.js"></script>
-
-<!-- IMPORTANDO FONT AWESOME-->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
-
-
-    
-  <!-- Site Icons -->
-<link rel="shortcut icon" href="{% static 'plantilla/habitaciones/images/favicon.ico' %}" type="image/x-icon" />
-<link rel="apple-touch-icon" href="{% static 'plantilla/habitaciones/images/apple-touch-icon.png' %}">
-
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="{% static 'plantilla/habitaciones/css/bootstrap.min.css' %}">
-<!-- Site CSS -->
-<link rel="stylesheet" href="{% static 'plantilla/habitaciones/style.css' %}">
-<!-- Colors CSS -->
-<link rel="stylesheet" href="{% static 'plantilla/habitaciones/css/colors.css' %}">
-<!-- All Version CSS -->
-<link rel="stylesheet" href="{% static 'plantilla/habitaciones/css/versions.css' %}">
-<!-- Responsive CSS -->
-<link rel="stylesheet" href="{% static 'plantilla/habitaciones/css/responsive.css' %}">
-<!-- Custom CSS -->
-<link rel="stylesheet" href="{% static 'plantilla/habitaciones/css/custom.css' %}">
-
-<!-- Modernizer JS -->
-<script src="{% static 'plantilla/habitaciones/js/modernizer.js' %}"></script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBPMAF9GQ1RsZognLTwwb7kYiT8SAfNZHo&callback=initMap"></script>
-
-
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
 </head>
+
 <body class="realestate_version">
 
-    <!-- LOADER -->
-    <div id="preloader">
-        <span class="loader"><span class="loader-inner"></span></span>
-    </div><!-- end loader -->
-    <!-- END LOADER -->
+  <!-- LOADER -->
+  <div id="preloader">
+    <span class="loader"><span class="loader-inner"></span></span>
+  </div>
+  <!-- END LOADER -->
 
-
-<header class="header header_style_01">
+  <!-- HEADER -->
+  <header class="header header_style_01">
     <nav class="megamenu navbar navbar-default">
-
-
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-                    aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="index.html">
-                    <img src="{% static 'plantilla/habitaciones/images/logos/logo.png' %}" alt="image">
-                </a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav navbar-right">
-                        <li>
-                        <a class="active d-flex align-items-center" href="/habitaciones">
-                            <i class="fas fa-bed me-2"></i> Habitaciones
-                        </a>
-                        </li>
-                        <li>
-                        <a class="d-flex align-items-center" href="/misPublicaciones">
-                            <i class="fas fa-list-alt me-2"></i> Mis publicaciones
-                        </a>
-                        </li>
-                        <li>
-                        <a class="d-flex align-items-center" href="#">
-                            <i class="fas fa-comments me-2"></i> Mis comentarios
-                        </a>
-                        </li>
-                        <li>
-                        <a class="d-flex align-items-center" href="/misFavoritos">
-                            <i class="fas fa-heart me-2"></i> Favoritos
-                        </a>
-                        </li>
-                        <li>
-                        <a class="d-flex align-items-center" href="/nuevaPublicacion">
-                            <i class="fas fa-plus-circle me-2"></i> Nueva Publicación
-                        </a>
-                        </li>
-
-
-                    <li class="social-links"><a href="#"><i class="fa fa-twitter global-radius"></i></a></li>
-                    <li class="social-links"><a href="#"><i class="fa fa-facebook global-radius"></i></a></li>
-                    <li class="social-links"><a href="#"><i class="fa fa-linkedin global-radius"></i></a></li>
-                  
-
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
-                            </a>
-                            <!-- Dropdown - User Information -->
-                                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                    aria-labelledby="userDropdown">
-
-                                <!-- Enlace a perfil -->
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Perfil
-                                </a>
-
-                                <div class="dropdown-divider"></div>
-
-                                <!-- Enlace para cerrar sesión -->
-                                {% if request.session.usuario_id %}
-                                    <a class="dropdown-item" href="/cerrarSesion">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Cerrar Sesión
-                                    </a>
-                                {% endif %}
-                                </div>
-
-                         
-                        </li>
-
-
-
-
-
-
-
-
-
-
-
-
-                    
-                </ul>
-            </div>
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+            aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">
+            <img src="{% static 'plantilla/habitaciones/images/logos/logo.png' %}" alt="image">
+          </a>
         </div>
+
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a class="active d-flex align-items-center" href="/habitaciones"><i class="fas fa-bed me-2"></i> Habitaciones</a></li>
+            <li><a class="d-flex align-items-center" href="/misPublicaciones"><i class="fas fa-list-alt me-2"></i> Mis publicaciones</a></li>
+            <li><a class="d-flex align-items-center" href="#"><i class="fas fa-comments me-2"></i> Mis comentarios</a></li>
+            <li><a class="d-flex align-items-center" href="/misFavoritos"><i class="fas fa-heart me-2"></i> Favoritos</a></li>
+            <li><a class="d-flex align-items-center" href="/nuevaPublicacion"><i class="fas fa-plus-circle me-2"></i> Nueva Publicación</a></li>
+
+            <li class="social-links"><a href="#"><i class="fa fa-twitter global-radius"></i></a></li>
+            <li class="social-links"><a href="#"><i class="fa fa-facebook global-radius"></i></a></li>
+            <li class="social-links"><a href="#"><i class="fa fa-linkedin global-radius"></i></a></li>
+
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
+              </a>
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                <a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i> Perfil</a>
+                <div class="dropdown-divider"></div>
+                {% if request.session.usuario_id %}
+                  <a class="dropdown-item" href="/cerrarSesion">
+                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> Cerrar Sesión
+                  </a>
+                {% endif %}
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
     </nav>
-</header>
-<div class="all-title-box">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<h2>About Us</h2>
-					<!-- Breadcrumbs -->
-					<nav id="breadcrumbs">
-						<ul>
-							<li><a href="#">Home</a></li>
-							<li>About Us</li>
-						</ul>
-					</nav>
-				</div>
-			</div>
-		</div>
-	</div>
-    <br>
-	
-         {%block contenido %}
-        {%endblock %}
-        <br>
+  </header>
+
+  <!-- Breadcrumbs (opcional) -->
+   <br><br><br><br>
+<div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <!-- Buscador -->
+       
+      </div>
     </div>
+  </div>
+</div>
 
-     <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 col-sm-4 col-xs-12">
-                    <div class="widget clearfix">
-                        <div class="widget-title">
-                            <img src="{% static 'plantilla/habitaciones/images/logos/logo-realestate.png' %}" alt="">
-                        </div>
-                        <p> Integer rutrum ligula eu dignissim laoreet. Pellentesque venenatis nibh sed tellus faucibus bibendum. Sed fermentum est vitae rhoncus molestie. Cum sociis natoque penatibus et magnis dis montes.</p>
-                        <p>Sed fermentum est vitae rhoncus molestie. Cum sociis natoque penatibus et magnis dis montes.</p>
-                    </div><!-- end clearfix -->
-                </div><!-- end col -->
 
-                <div class="col-md-3 col-sm-3 col-xs-12">
-                    <div class="widget clearfix">
-                        <div class="widget-title">
-                            <h3>Info Link</h3>
-                        </div>
+  <br>
 
-                        <ul class="twitter-widget footer-links">
-                            <li><a href="#"> Home </a></li>
-                            <li><a href="#"> About Us </a></li>
-                            <li><a href="#"> Services</a></li>
-							<li><a href="#"> Gallery</a></li>
-							<li><a href="#"> Properties</a></li>
-							<li><a href="#"> Contact</a></li>
-                        </ul><!-- end links -->
-                    </div><!-- end clearfix -->
-                </div><!-- end col -->
-				
-				<div class="col-md-3 col-sm-3 col-xs-12">
-                    <div class="widget clearfix">
-                        <div class="widget-title">
-                            <h3>Contact Details</h3>
-                        </div>
+  <!-- CONTENIDO -->
+  {% block contenido %}
+  {% endblock %}
+  <br>
 
-                        <ul class="footer-links">
-                            <li><a href="mailto:#">info@yoursite.com</a></li>
-                            <li><a href="#">www.yoursite.com</a></li>
-                            <li>PO Box 16122 Collins Street West Victoria 8007 Australia</li>
-                            <li>+61 3 8376 6284</li>
-                        </ul><!-- end links -->
-                    </div><!-- end clearfix -->
-                </div><!-- end col -->
-				
-                <div class="col-md-2 col-sm-2 col-xs-12">
-                    <div class="widget clearfix">
-                        <div class="widget-title">
-                            <h3>Social</h3>
-                        </div>
-                        <ul class="footer-links">
-                            <li><a href="#"><i class="fa fa-facebook"></i> Facebook</a></li>
-                            <li><a href="#"><i class="fa fa-github"></i> Github</a></li>
-                            <li><a href="#"><i class="fa fa-twitter"></i> Twitter</a></li>
-                            <li><a href="#"><i class="fa fa-dribbble"></i> Dribbble</a></li>
-                            <li><a href="#"><i class="fa fa-pinterest"></i> Pinterest</a></li>
-                        </ul><!-- end links -->
-                    </div><!-- end clearfix -->
-                </div><!-- end col -->
-				
-            </div><!-- end row -->
-        </div><!-- end container -->
-    </footer><!-- end footer -->
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
 
-    <div class="copyrights">
-        <div class="container">
-            <div class="footer-distributed">
-                <div class="footer-left">
-                    <p class="footer-company-name">Design By : <a href="https://html.design/">HTML design</a> Re-distribution by <a href="https://themewagon.com/" target="_blank">Themewagon</a> All Rights Reserved. &copy; 2018 </p>
-                </div>
-
-                <div class="footer-right">
-                    <form method="get" action="#">
-                        <input placeholder="Subscribe our newsletter.." name="search">
-                        <i class="fa fa-envelope-o"></i>
-                    </form>
-                </div>
+        <div class="col-md-4 col-sm-4 col-xs-12">
+          <div class="widget clearfix">
+            <div class="widget-title">
+              <img src="{% static 'plantilla/habitaciones/images/logos/logo-realestate.png' %}" alt="">
             </div>
-        </div><!-- end container -->
-    </div><!-- end copyrights -->
+            <p>RoomSpace es la plataforma web ideal para quienes buscan alquilar habitaciones cómodas y confiables...</p>
+          </div>
+        </div>
 
-    <a href="#" id="scroll-to-top" class="dmtop global-radius"><i class="fa fa-angle-up"></i></a>
-<!-- ALL JS FILES -->
-        <script src="{% static 'plantilla/habitaciones/js/all.js' %}"></script>
+        <div class="col-md-3 col-sm-3 col-xs-12">
+          <div class="widget clearfix">
+            <div class="widget-title"><h3>Contact Details</h3></div>
+            <ul class="footer-links">
+              <li><a href="mailto:#">info@yoursite.com</a></li>
+              <li><a href="#">www.yoursite.com</a></li>
+              <li>PO Box 16122 Collins Street West Victoria 8007 Australia</li>
+              <li>+61 3 8376 6284</li>
+            </ul>
+          </div>
+        </div>
 
-        <!-- ALL PLUGINS -->
-        <script src="{% static 'plantilla/habitaciones/js/custom.js' %}"></script>
-        <script src="{% static 'plantilla/habitaciones/js/portfolio.js' %}"></script>
-        <script src="{% static 'plantilla/habitaciones/js/hoverdir.js' %}"></script>
+        <div class="col-md-2 col-sm-2 col-xs-12">
+          <div class="widget clearfix">
+            <div class="widget-title"><h3>Social</h3></div>
+            <ul class="footer-links">
+              <li><a href="#"><i class="fa fa-facebook"></i> Facebook</a></li>
+              <li><a href="#"><i class="fa fa-github"></i> Github</a></li>
+              <li><a href="#"><i class="fa fa-twitter"></i> Twitter</a></li>
+              <li><a href="#"><i class="fa fa-dribbble"></i> Dribbble</a></li>
+              <li><a href="#"><i class="fa fa-pinterest"></i> Pinterest</a></li>
+            </ul>
+          </div>
+        </div>
 
-        <!-- Google Maps API -->
-        <script src="https://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
+      </div>
+    </div>
+  </footer>
 
-        <!-- MAP & CONTACT -->
-        <script src="{% static 'plantilla/habitaciones/js/map.js' %}"></script>
-        
+  <div class="copyrights">
+    <div class="container">
+      <div class="footer-distributed">
+        <div class="footer-left">
+          <p class="footer-company-name">
+            © 2025 RoomSpace. Todos los derechos reservados &nbsp;|&nbsp; Tu plataforma confiable para el arriendo de habitaciones.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 
+  <a href="#" id="scroll-to-top" class="dmtop global-radius"><i class="fa fa-angle-up"></i></a>
+
+  <!-- JS FILES -->
+  <script src="{% static 'plantilla/habitaciones/js/all.js' %}"></script>
+  <script src="{% static 'plantilla/habitaciones/js/custom.js' %}"></script>
+  <script src="{% static 'plantilla/habitaciones/js/portfolio.js' %}"></script>
+  <script src="{% static 'plantilla/habitaciones/js/hoverdir.js' %}"></script>
+  <script src="{% static 'plantilla/habitaciones/js/map.js' %}"></script>
+
+  <!-- Google Maps -->
+  <script src="https://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
+
+  <!-- Estilos adicionales -->
+  <style>
+    .error {
+      color: red;
+      font-weight: bold;
+    }
+    .form-control.error {
+      border: 1px solid red;
+    }
+  </style>
 
 </body>
 </html>
-
- <style>
-      .error{
-        color: red;
-       font-weight:bold;
-      }
-      .form-control.error{
-        border:1px solid red
-      }
-    </style>
-

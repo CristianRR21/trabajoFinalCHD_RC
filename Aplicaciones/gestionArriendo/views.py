@@ -42,6 +42,7 @@ def habitaciones(request):
     usuario = Usuario.objects.get(id=request.session['usuario_id'])
 
     publicaciones = Publicacion.objects.filter(estado='ACTIVO').select_related('usuario', 'tipohabitacion')
+    tipos=TipoHabitacion.objects.all()
 
     data = []
     for pub in publicaciones:
@@ -50,15 +51,15 @@ def habitaciones(request):
             'id': pub.id,
             'titulo': pub.titulo,
             'precio': pub.precio,
-            'descripcion': pub.descripcion,
-            'tipo': pub.tipohabitacion.nombre,
+            'descripcion': pub.descripcion,          
             'usuario': pub.usuario.username,
             'foto_url': foto.imagen.url if foto and foto.imagen else None
         })
 
     return render(request, "habitaciones/index.html", {
         'usuario': usuario,
-        'publicaciones': data
+        'publicaciones': data,
+        'tipos':tipos
     })
 
 
@@ -344,3 +345,64 @@ def procesarEdicionPublicacion(request):
     messages.success(request, "Publicación actualizada correctamente.")
     return redirect('/misPublicaciones')
 # endregion
+
+def buscarPublicaciones(request):
+    termino = request.GET.get('buscar', '').strip()
+    publicaciones_activas = Publicacion.objects.filter(estado='ACTIVO')
+
+    publicaciones_filtradas = publicaciones_activas.filter(
+        titulo__icontains=termino
+    ) | publicaciones_activas.filter(
+        descripcion__icontains=termino
+    )
+
+    data = []
+    for pub in publicaciones_filtradas:
+        foto = Fotografia.objects.filter(publicacion=pub).order_by('orden').first()
+        data.append({
+            'id': pub.id,
+            'titulo': pub.titulo,
+            'precio': pub.precio,
+            'descripcion': pub.descripcion,
+            'tipo': pub.tipohabitacion.nombre,
+            'usuario': pub.usuario.username,
+            'foto_url': foto.imagen.url if foto and foto.imagen else None
+        })
+
+    return render(request, 'habitaciones/index.html', {
+        'publicaciones': data,
+        'termino_busqueda': termino,
+    })
+
+
+def filtroTipo(request):
+    tipo_id = request.GET.get('tipo')
+    if tipo_id:
+        publicaciones = Publicacion.objects.filter(
+            estado='ACTIVO',
+            tipohabitacion_id=tipo_id
+        ).select_related('usuario', 'tipohabitacion')
+    else:
+        publicaciones = Publicacion.objects.filter(
+            estado='ACTIVO'
+        ).select_related('usuario', 'tipohabitacion')
+
+    tipos = TipoHabitacion.objects.all()
+    data = []
+    for pub in publicaciones:
+        foto = Fotografia.objects.filter(publicacion=pub).order_by('orden').first()
+        data.append({
+            'id': pub.id,
+            'titulo': pub.titulo,
+            'precio': pub.precio,
+            'descripcion': pub.descripcion,
+            'tipohabitacion': pub.tipohabitacion.nombre,
+            'usuario': pub.usuario.username,
+            'foto_url': foto.imagen.url if foto and foto.imagen else None
+        })
+
+    return render(request, "habitaciones/index.html", {
+        'publicaciones': data,
+        'tipos': tipos,
+        'tipo_seleccionado': tipo_id
+    })

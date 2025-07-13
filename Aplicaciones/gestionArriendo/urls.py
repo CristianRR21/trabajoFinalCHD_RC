@@ -33,6 +33,9 @@ urlpatterns = [
     path('calificarPublicacion/<id>/',views.calificarPublicacion),
     path('misFavoritos',views.misFavoritos),
     path('eliminarFavorito/<id>',views.eliminarFavorito),
+    path('buscar/', views.buscarPublicaciones),
+     path('filtroTipo/', views.filtroTipo, name='filtro_tipo'),
+
     
     
 

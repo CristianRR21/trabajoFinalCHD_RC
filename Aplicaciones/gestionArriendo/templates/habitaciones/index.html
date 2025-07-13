@@ -1,25 +1,59 @@
 {% extends 'habitaciones/plantilla.html' %}
 
 {% block contenido %}
-
-
-
-
-<!--<a href="/nuevaPublicacion" class="btn btn-success">Nueva Publicacion</a> !-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 
 <style>
   .tarjeta-publicacion {
-    background: #fff;
-    border: 2px solid #9e9e9e; 
-
+    background: #ffffff;
+    border: 2px solid #cccccc; 
     border-radius: 0.5rem;   
     padding: 1rem;
   }
-  
+  .img-publicacion {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+  }
+   .detalle-publicacion h2, 
+   .detalle-publicacion h3 {
+    margin: 0.2rem 0;
+  }  
   
 </style>
+<div class="container mt-3">
+  <div class="row justify-content-center align-items-center">
 
+    <!-- Buscador -->
+    <div class="col-md-6">
+      <form method="GET" action="/buscar" class="d-flex align-items-center">
+        <input type="text" name="buscar" id="buscar" class="form-control"  style="border-radius: 10px; height: 50px;" placeholder="Buscar publicaciones..." value="{{ termino_busqueda|default:'' }}">
+        <br>
+        <button type="submit" class="btn btn-success ms-2">Buscar</button>
+        <button type="button" onclick="window.location.href='/habitaciones'" class="btn btn-outline-secondary ms-2">Limpiar</button>
+      </form>
+    </div>
+
+    <!-- Filtro por tipo -->
+   <div class="col-md-6">
+      <form method="GET" action="/filtroTipo" class="d-flex align-items-center">
+        <select name="tipo" class="form-select" style="border-radius: 10px; height: 50px;" onchange="this.form.submit()">          
+          {% for tipo in tipos %}
+            <option value="{{ tipo.id }}">{{ tipo.nombre }}</option>
+          {% endfor %}
+        </select>
+      </form>
+    </div>
+
+
+  </div>
+</div>
+
+
+
+<br>
 <div id="contenedor-publicaciones" class="container mt-4">
   {% if publicaciones %}
     {% for pub in publicaciones %}
@@ -28,56 +62,40 @@
     <div class="row">
         <!-- Imagen izquierda -->
          <a href="detallesPublicacion/{{pub.id}}">
-        <div class="col-md-2 col-12 text-center mb-3 mb-md-0">
+        <div class="col-md-3 col-12 text-center mb-3 mb-md-0">
           {% if pub.foto_url %}
-            <img src="{{ pub.foto_url }}" alt="Imagen de {{ pub.titulo }}"
-                style="width: 100%; height: 100%;" >
-            {% endif %}
+            <img src="{{ pub.foto_url }}" alt="Imagen de {{ pub.titulo }}" class="img-publicacion">
+          {% else %}
+            <img src="/static/img/default-room.jpg" alt="Sin imagen" class="img-publicacion">
+          {% endif %}
 
         </div>
         </a>
 
         <!-- Detalles centrales -->
-        <div class="col-md-8 col-12">
-         
-          <h1 >$ {{ pub.precio }} / mes</h1>
-          <h1 >{{ pub.titulo }}</h1>
-          <p class="mt-1"><strong>Tipo:</strong> {{ pub.tipo }}</p>          
+       <div class="col-md-6 col-12 detalle-publicacion">      
+          <h2 >$ {{ pub.precio }} / mes</h2>
+          <h2 >{{ pub.titulo }}</h2>
+          <p class="mt-1"><strong>Tipo:</strong> {{ pub.tipohabitacion}}</p>          
           <p class="mt-1" style="font-size: 15px;">{{ pub.descripcion|truncatechars:150 }}</p>
-          <p class="mt-1"><strong>Publicado por:</strong> {{ pub.usuario }}</p>
+          <hr>
+          <p class="mt-1"><strong>Publicado por:</strong> {{ pub.usuario }}</p> 
+              <a href="https://wa.me/{{ pub.whatsapp }}" target="_blank" class="btn btn-success mt-2">
+            WhatsApp
+          </a>
+                
         </div>
+        
 
         <!-- Precio y botón a la derecha -->
-  <div class="col-md-2 col-12 d-flex align-items-center justify-content-start mt-2 mt-md-0">    
-      <a href="favoritos/{{pub.id}}">Agregar a favoritos</a>
-
-<!--
-<span class="btn btn-outline-primary d-flex align-items-center justify-content-center"
-      role="button"
-      data-publicacion-id="{{ pub.id }}"
-      style="
-        font-size: 20px;
-        width: 45px;
-        height: 45px;
-        border-radius: 50%;
-        cursor: pointer;
-        border-color: #0d6efd; /* azul bootstrap */
-        color:#a8cf45; /* verde bootstrap */
-        transition: background-color 0.3s, color 0.3s;
-      "
-      aria-label="Agregar a favoritos"
-      title="Agregar a favoritos">
-    <i class="fas fa-star"></i>
-</span>
--->
-
-
-
-
-              
+     <div class="col-md-2 col-12 d-flex align-items-center justify-content-start mt-2 mt-md-0">    
+      <a href="favoritos/{{pub.id}}">   <i class="fa-solid fa-thumbtack"></i> Agregar a favoritos</a>  
+     
+      
         </div>
 
       </div>
+      
     </div>
     <br>
     {% endfor %}
@@ -85,7 +103,7 @@
     <div class="alert alert-warning">No hay publicaciones registradas todavía.</div>
   {% endif %}
 </div>
-
-
 <br><br>
 {% endblock %}
+
+
