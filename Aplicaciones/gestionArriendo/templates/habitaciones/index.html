@@ -37,7 +37,16 @@
     </div>
 
     <!-- Filtro por tipo -->
-   
+   <div class="col-md-6">
+      <form method="GET" action="/filtroTipo" class="d-flex align-items-center">
+        <select name="tipo" class="form-select" style="border-radius: 10px; height: 50px;" onchange="this.form.submit()">          
+          {% for tipo in tipos %}
+            <option value="{{ tipo.id }}">{{ tipo.nombre }}</option>
+          {% endfor %}
+        </select>
+      </form>
+    </div>
+
 
   </div>
 </div>

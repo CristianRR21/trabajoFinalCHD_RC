@@ -1,24 +1,41 @@
 {% extends 'habitaciones/plantilla.html' %}
 
 {% block contenido %}
+<!-- CSS de Owl Carousel -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<!-- JS de Owl Carousel -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
 <br>
+<style>
+  .img-publicacion {
+    width: 100%;
+    height: auto; /* Muestra imagen completa */
+    max-height: 250px; /* Controla altura máxima */
+    object-fit: contain; /* Asegura que no se recorte */
+    border-radius: 0.5rem;
+    background-color: #f8f9fa; /* Color de fondo si la imagen no llena el espacio */
+  }
+</style>
 <div class="container mt-4">
 
-  <!-- Galería de imágenes -->
-  {% if fotos %}
-  <div class="row mb-4">
-    {% for foto in fotos %}
-      {% if foto.imagen %}
-      <div class="col-md-4 col-sm-6 mb-3">
-        <img src="{{ foto.imagen.url }}"
-             style="height: 250px; width: 100%; object-fit: cover;" alt="Imagen de la publicación">
+{% if fotos %}
+<div class="owl-carousel owl-theme mt-4 mb-5">
+  {% for foto in fotos %}
+    {% if foto.imagen %}
+      <div class="item">
+        <img src="{{ foto.imagen.url }}" alt="Imagen de publicación" class="img-fluid rounded" style="max-height: 400px; object-fit: contain;">
       </div>
-      {% endif %}
-    {% endfor %}
-  </div>
-  {% endif %}
+    {% endif %}
+  {% endfor %}
+</div>
+{% endif %}
 
-  <!-- Detalles de la publicación -->
   <div class="col-md-8 col-12 mb-4">
     <h4 class="mb-1 text-primary fw-bold">$ {{ publicacion.precio }} / mes</h4>
     <h5>{{ publicacion.titulo }}</h5>
@@ -26,7 +43,6 @@
     <p class="mb-1" style="font-size: 15px;">{{ publicacion.descripcion }}</p>
   </div>
 
-  <!-- Ubicación -->
 
  <br><br> <br><br> <br><br>
   <div class="mb-5">
@@ -48,22 +64,40 @@
 
   <h1>CALIFICAR ESCALA 1-5 </h1>
 
-<form action="/calificarPublicacion/{{publicacion.id}}/" method="post" id="frm_calificacion">
-    {% csrf_token %}
-    <label for="calificacion">Selecciona una calificación:</label>
-    <select id="calificacion" name="calificacion" required>
-        <option value="" disabled selected>-- Escoge --</option>
-        <option value="1">1 - Muy malo</option>
-        <option value="2">2 - Malo</option>
-        <option value="3">3 - Regular</option>
-        <option value="4">4 - Bueno</option>
-        <option value="5">5 - Excelente</option>
-    </select>
-    <button type="submit">Enviar Calificación</button>
-</form>
+  <form action="/calificarPublicacion/{{publicacion.id}}/" method="post" id="frm_calificacion">
+      {% csrf_token %}
+      <label for="calificacion">Selecciona una calificación:</label>
+      <select id="calificacion" name="calificacion" required>
+          <option value="" disabled selected>-- Escoge --</option>
+          <option value="1">1 - Muy malo</option>
+          <option value="2">2 - Malo</option>
+          <option value="3">3 - Regular</option>
+          <option value="4">4 - Bueno</option>
+          <option value="5">5 - Excelente</option>
+      </select>
+      <button type="submit">Enviar Calificación</button>
+  </form>
 
 </div>
  
+<script>
+  $(document).ready(function(){
+    $(".owl-carousel").owlCarousel({
+      loop: true,
+      margin: 10,
+      nav: true,
+      dots: true,
+      autoplay: true,
+      autoplayTimeout: 4000,
+      autoplayHoverPause: true,
+      responsive:{
+        0: { items: 1 },
+        768: { items: 1 },
+        1024: { items: 1 }
+      }
+    });
+  });
+</script>
 
 <script type="text/javascript">
     function initMap() {
