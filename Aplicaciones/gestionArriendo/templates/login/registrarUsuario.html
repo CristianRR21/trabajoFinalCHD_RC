@@ -28,58 +28,102 @@
 
     <div class="container">
 
-        <div class="card o-hidden border-0 shadow-lg my-5">
-            <div class="card-body p-0">
-                <!-- Nested Row within Card Body -->
-                <div class="row">
-                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
-                    <div class="col-lg-7">
-                        <div class="p-5">
-                            <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+
+            <div class="col-xl-10 col-lg-12 col-md-9">
+
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
+                        <div class="row">
+                            <!-- Imagen izquierda -->
+                             <div class="col-lg-6 d-none d-lg-block bg-login-image">
+                                  <img src="{% static 'plantilla/administrador/img/logo.jpg' %}" alt="Logo RoomSpace"
+                                    style="width: 90%; height: 80%; object-fit: contain; display: block; margin: 0 auto 10px;">
+                                <h1 style="font-weight: 700; font-size: 2.4rem; color: #4e73df; margin: 0; text-align:center">RoomSpace</h1>
                             </div>
 
-                             <form class="user" action="/registrarUsuario" method="post">
-                                {% csrf_token %}
-                                <input type="text" name="username" placeholder="Username" required>
-                                <input type="text" name="first_name" placeholder="Nombres" required>
-                                <input type="text" name="last_name" placeholder="Apellidos" required>
-                                <input type="email" name="email" placeholder="Email" required>
-                                <input type="text" name="telefono" placeholder="Teléfono" required>
-                                <textarea name="direccion" placeholder="Dirección" required></textarea>
-                                <input type="password" name="password" placeholder="Contraseña" required>
-                                <input type="password" name="password2" placeholder="Repetir Contraseña" required>
-                                <button type="submit">Registrar</button>
-                            </form>
+                            <!-- Formulario a la derecha -->
+                            <div class="col-lg-6">
+                                <div class="p-5">
+                                    <div class="text-center mb-4">
+                                        <h1 class="h4 text-gray-900">¡Crea una cuenta!</h1>
+                                    </div>
 
+                                    <form class="user" action="/registrarUsuario" method="post">
+                                        {% csrf_token %}
 
+                                        <div class="form-row">
+                                            
+                                            <div class="form-group col-md-6">
+                                                <input type="text" name="first_name" class="form-control form-control-user" placeholder="Nombres" required>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <input type="text" name="last_name" class="form-control form-control-user" placeholder="Apellidos" required>
+                                            </div>
+                                        </div>
 
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <input type="text" name="telefono" class="form-control form-control-user" placeholder="Teléfono" required>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <input type="text" name="direccion" class="form-control form-control-user" placeholder="Dirección" rows="1" required>
+                                            </div>
+                                        </div>
 
-                            <hr>
-                            <div class="text-center">
-                                <a class="small" href="forgot-password.html">Forgot Password?</a>
-                            </div>
-                            <div class="text-center">
-                                <a class="small" href="login.html">Already have an account? Login!</a>
+                                        <div class="form-row">
+                                            
+                                            <div class="form-group col-md-6">
+                                                <input type="email" name="email" class="form-control form-control-user" placeholder="Email" required>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <input type="text" name="username" class="form-control form-control-user" placeholder="Usuario" required>
+                                            </div>
+                                        </div>
+
+                                      
+
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <input type="password" name="password" class="form-control form-control-user" placeholder="Contraseña" required>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <input type="password" name="password2" class="form-control form-control-user" placeholder="Repetir Contraseña" required>
+                                            </div>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary btn-user btn-block">
+                                            Registrar
+                                        </button>
+                                    </form>
+
+                                    <hr>
+                                    <div class="text-center">
+                                        <a class="small" href="#">¿Olvidaste tu contraseña?</a>
+                                    </div>
+                                    <div class="text-center">
+                                        <a class="small" href="/iniciarSesion">¿Ya tienes una cuenta? ¡Inicia sesión!</a>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
+
         </div>
 
     </div>
 
     <!-- Bootstrap core JavaScript-->
-     <!-- Bootstrap core JavaScript-->
-        <script src="{% static 'plantilla/administrador/vendor/jquery/jquery.min.js' %}"></script>
-            <script src="{% static 'plantilla/administrador/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-
-            <!-- Core plugin JavaScript-->
-            <script src="{% static 'plantilla/administrador/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
-
-            <!-- Custom scripts for all pages-->
-            <script src="{% static 'plantilla/administrador/js/sb-admin-2.min.js' %}"></script>
+    <script src="{% static 'plantilla/administrador/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'plantilla/administrador/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'plantilla/administrador/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+    <script src="{% static 'plantilla/administrador/js/sb-admin-2.min.js' %}"></script>
 
 </body>
 

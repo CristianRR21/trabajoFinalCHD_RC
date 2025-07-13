@@ -11,7 +11,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Login</title>
+    <title>RoomSpace</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -37,11 +38,15 @@
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                            <div class="col-lg-6 d-none d-lg-block bg-login-image">
+                                  <img src="{% static 'plantilla/administrador/img/logo.jpg' %}" alt="Logo RoomSpace"
+                                    style="width: 90%; height: 80%; object-fit: contain; display: block; margin: 0 auto 10px;">
+                                <h1 style="font-weight: 700; font-size: 2.4rem; color: #4e73df; margin: 0; text-align:center">RoomSpace</h1>
+                            </div>
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Bienvenido!</h1>
                                     </div>
 
                                        <form class="user" action="/iniciarSesion" method="post">
@@ -49,11 +54,11 @@
 
                                         <div class="form-group">
                                             <input name="email" type="email" class="form-control form-control-user"
-                                                placeholder="Enter Email Address...">
+                                                placeholder="Ingrese su Email">
                                         </div>
                                         <div class="form-group">
                                             <input name="password" type="password" class="form-control form-control-user"
-                                                placeholder="Password">
+                                                placeholder="Ingrese su contraseña">
                                         </div>
                                         <button type="submit" class="btn btn-primary btn-user btn-block">
                                             Login
@@ -62,7 +67,7 @@
 
                                     <hr>
                                     <div class="text-center">
-                                        <a class="small" href="#">Olvidaste tu contraseña?</a>
+                                        <a class="small" href="#">¿Olvidaste tu contraseña?</a>
                                     </div>
                                     <div class="text-center">
                                         <a class="small" href="/registro">Crear una cuenta</a>
@@ -88,6 +93,37 @@
 
             <!-- Custom scripts for all pages-->
             <script src="{% static 'plantilla/administrador/js/sb-admin-2.min.js' %}"></script>
+
+
+{% if messages %}
+  {% for mensaje in messages %}
+    <script>
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: '{{ mensaje.tags|escapejs }}',
+        title: '{{ mensaje|escapejs }}',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true
+      });
+    </script>
+  {% endfor %}
+{% endif %}
+
+
+   <style>
+
+
+      .error{
+        color: red;
+       font-weight:bold;
+      }
+      .form-control.error{
+        border:1px solid red
+      }
+    </style>
+
 
 </body>
 
