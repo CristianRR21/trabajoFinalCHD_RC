@@ -12,6 +12,9 @@
     <meta name="author" content="">
 
     <title>RoomSpace</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.19.5/jquery.validate.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Custom fonts for this template-->
@@ -49,7 +52,7 @@
                                         <h1 class="h4 text-gray-900 mb-4">Bienvenido!</h1>
                                     </div>
 
-                                       <form class="user" action="/iniciarSesion" method="post">
+                                    <form class="user" action="/iniciarSesion" method="post" id="login">
                                         {% csrf_token %}
 
                                         <div class="form-group">
@@ -61,7 +64,7 @@
                                                 placeholder="Ingrese su contraseña">
                                         </div>
                                         <button type="submit" class="btn btn-primary btn-user btn-block">
-                                            Login
+                                            Iniciar Sesión
                                         </button>
                                     </form>
 
@@ -93,7 +96,11 @@
 
             <!-- Custom scripts for all pages-->
             <script src="{% static 'plantilla/administrador/js/sb-admin-2.min.js' %}"></script>
+                 <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 
+  <!-- jQuery Validate -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.js"></script>
 
 {% if messages %}
   {% for mensaje in messages %}
@@ -112,17 +119,56 @@
 {% endif %}
 
 
+  <script>
+      $("#login").validate({
+        rules: {
+          email: {
+            required: true,
+            email: true
+          },
+          password: {
+            required: true,
+            minlength: 6
+          }
+        },
+        messages: {
+          email: {
+            required: "Por favor ingrese su correo",
+            email: "Ingresa un correo válido"
+          },
+          password: {
+            required: "Por favor ingrese su contraseña",
+            minlength: "Mínimo 6 caracteres"
+          }
+        }
+      });
+
+  </script>
+
+
    <style>
 
 
       .error{
         color: red;
        font-weight:bold;
+       font-size: 12px;
       }
       .form-control.error{
         border:1px solid red
       }
     </style>
+
+
+
+
+
+
+
+
+
+
+
 
 
 </body>

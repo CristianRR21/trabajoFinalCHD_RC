@@ -51,35 +51,35 @@
                                         <h1 class="h4 text-gray-900">¡Crea una cuenta!</h1>
                                     </div>
 
-                                    <form class="user" action="/registrarUsuario" method="post">
+                                    <form class="user" action="/registrarUsuario" method="post" id="formRegistro">
                                         {% csrf_token %}
 
                                         <div class="form-row">
                                             
                                             <div class="form-group col-md-6">
-                                                <input type="text" name="first_name" class="form-control form-control-user" placeholder="Nombres" required>
+                                                <input type="text" name="first_name" class="form-control form-control-user" placeholder="Nombres" >
                                             </div>
                                             <div class="form-group col-md-6">
-                                                <input type="text" name="last_name" class="form-control form-control-user" placeholder="Apellidos" required>
+                                                <input type="text" name="last_name" class="form-control form-control-user" placeholder="Apellidos" >
                                             </div>
                                         </div>
 
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
-                                                <input type="text" name="telefono" class="form-control form-control-user" placeholder="Teléfono" required>
+                                                <input type="text" name="telefono" class="form-control form-control-user" placeholder="Teléfono" >
                                             </div>
                                             <div class="form-group col-md-6">
-                                                <input type="text" name="direccion" class="form-control form-control-user" placeholder="Dirección" rows="1" required>
+                                                <input type="text" name="direccion" class="form-control form-control-user" placeholder="Dirección" rows="1" >
                                             </div>
                                         </div>
 
                                         <div class="form-row">
                                             
                                             <div class="form-group col-md-6">
-                                                <input type="email" name="email" class="form-control form-control-user" placeholder="Email" required>
+                                                <input type="email" name="email" class="form-control form-control-user" placeholder="Email" >
                                             </div>
                                             <div class="form-group col-md-6">
-                                                <input type="text" name="username" class="form-control form-control-user" placeholder="Usuario" required>
+                                                <input type="text" name="username" class="form-control form-control-user" placeholder="Usuario" >
                                             </div>
                                         </div>
 
@@ -87,15 +87,15 @@
 
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
-                                                <input type="password" name="password" class="form-control form-control-user" placeholder="Contraseña" required>
+                                                <input type="password" name="password" class="form-control form-control-user" placeholder="Contraseña" >
                                             </div>
                                             <div class="form-group col-md-6">
-                                                <input type="password" name="password2" class="form-control form-control-user" placeholder="Repetir Contraseña" required>
+                                                <input type="password" name="password2" class="form-control form-control-user" placeholder="Repetir Contraseña" >
                                             </div>
                                         </div>
 
                                         <button type="submit" class="btn btn-primary btn-user btn-block">
-                                            Registrar
+                                            Registrarse
                                         </button>
                                     </form>
 
@@ -124,6 +124,105 @@
     <script src="{% static 'plantilla/administrador/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'plantilla/administrador/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
     <script src="{% static 'plantilla/administrador/js/sb-admin-2.min.js' %}"></script>
+     <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+  <!-- jQuery Validate -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.js"></script>
+{% if messages %}
+    {% for mensaje in messages %}
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            Swal.fire({
+                title: "{% if 'error' in mensaje.tags %}Error{% elif 'warning' in mensaje.tags %}Advertencia{% elif 'success' in mensaje.tags %}Éxito{% else %}Información{% endif %}",
+                text: "{{ mensaje|escapejs }}",
+                icon: "{% if 'error' in mensaje.tags %}error{% elif 'warning' in mensaje.tags %}warning{% elif 'success' in mensaje.tags %}success{% else %}info{% endif %}",
+                confirmButtonText: 'Aceptar'
+            });
+        </script>
+    {% endfor %}
+{% endif %}
+
+    <style>
+    .error {
+      color: red;
+      font-weight: bold;
+      font-size: 12px;
+    }
+    .form-control.error {
+      border: 1px solid red;
+    }
+  </style>
+
+<script>
+    $.validator.addMethod("soloLetras", function(value, element) {
+    return this.optional(element) || /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(value);
+    }, "Solo se permiten letras");
+     $(document).ready(function () {
+
+    $("#formRegistro").validate({
+      rules: {
+        first_name: { required: true,
+        soloLetras: true},
+        last_name: { required: true,
+        soloLetras: true},
+        telefono: {
+          required: true,
+          digits: true,
+          minlength: 10,
+          maxlength: 10
+        },
+        direccion: { required: true },
+        email: {
+          required: true,
+          email: true
+        },
+        username: { required: true },
+        password: {
+          required: true,
+          minlength: 6
+        },
+        password2: {
+          required: true,
+          equalTo: "[name='password']"
+        }
+      },
+      messages: {
+        first_name:{ 
+            required:"Ingrese sus nombres",
+            soloLetras: "Solo se permiten letras"
+        },
+        last_name: {
+            required:"Ingrese sus apellidos",
+      soloLetras: "Solo se permiten letras"},
+        telefono: {
+          required: "Ingrese su teléfono",
+          digits: "Solo números",
+          minlength: "Mínimo 10 dígitos",
+          maxlength: "Máximo 10 dígitos"
+
+        },
+        direccion: "Ingrese su dirección",
+        email: {
+          required: "Ingrese un correo",
+          email: "Correo inválido"
+        },
+        username: "Ingrese un nombre de usuario",
+        password: {
+          required: "Ingrese una contraseña",
+          minlength: "Mínimo 6 caracteres"
+        },
+        password2: {
+          required: "Repita la contraseña",
+          equalTo: "Las contraseñas no coinciden"
+        }
+      }
+    });
+     });
+
+</script>
+
+
 
 </body>
 

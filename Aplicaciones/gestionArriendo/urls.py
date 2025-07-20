@@ -41,7 +41,7 @@ urlpatterns = [
     path('editarTipoHabitacion/<int:id>/',views.editarTipoHabitacion),
     path('eliminarTipo/<id>',views.eliminarTipo),
     
-    path('eliminarPublicacionAdmin/<id>',views.eliminarPublicacionAdmin),
+    path('eliminarPublicacionAdmin/<id>/',views.eliminarPublicacionAdmin),
     
 
   path('detallesPublicacionAdmin/<id>',views.detallesPublicacionAdmin),

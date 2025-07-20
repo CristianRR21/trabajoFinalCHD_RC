@@ -2,6 +2,13 @@
 {% block contenido %}
 <!--cometario-->
 
+{% if usuario %}
+    <p>Hola, {{ usuario.username }}!</p>
+{% else %}
+    <p>No has iniciado sesión</p>
+{% endif %}
+
+
 <h1 style="text-align: center;">Publicaciones Activas</h1><br>
   <script>
                 function confirmarEliminacion(url){
@@ -59,10 +66,37 @@
             <td>{{ item.fechacreacion }}</td>
             <td>
                <a href="/detallesPublicacionAdmin/{{item.id}}"><i class="fa fa-eye"></i></a>
-      
-                <a href="#"class="btn btn-outline-danger btn-sm btn-eliminar" title="Eliminar" onclick="confirmarEliminacion('/eliminarPublicacionAdmin/{{item.id}}')">
-                        <i class="fa fa-trash"></i>
+
+            <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalEliminarPublicacion{{ item.id }}" title="Eliminar">
+                <i class="fa fa-trash"></i>
+            </button>
+
             </td>
+        <!-- Modal eliminar publicación -->
+            <div class="modal fade" id="modalEliminarPublicacion{{ item.id }}" tabindex="-1" aria-labelledby="modalEliminarLabel{{ item.id }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <form method="POST" action="/eliminarPublicacionAdmin/{{ item.id }}/">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="modalEliminarLabel{{ item.id }}">Eliminar Publicación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                    <p>Por favor, indica el motivo por el cual deseas eliminar esta publicación:</p>
+                    <div class="mb-3">
+                        <textarea name="motivo" class="form-control" rows="3" required></textarea>
+                    </div>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+            </div>
+
         </tr>
         {% endfor %}
     </tbody>

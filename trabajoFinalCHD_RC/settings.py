@@ -67,6 +67,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'Aplicaciones.gestionArriendo.context_processors.usuario_actual',
             ],
         },
     },
@@ -148,3 +149,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL='/media/'
 MEDIA_ROOT=(os.path.join(BASE_DIR,'trabajoFinalCHD_RC/media/'))
+
+TELEGRAM_BOT_TOKEN = '8098744858:AAFH0nA0azl6kc72z57VjQchXpwyh-vTgm0'

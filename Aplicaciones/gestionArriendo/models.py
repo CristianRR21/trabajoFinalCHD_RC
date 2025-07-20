@@ -30,8 +30,8 @@ class Publicacion(models.Model):
     precio = models.DecimalField(max_digits=10, decimal_places=2)
     descripcion = models.TextField()
     tipohabitacion = models.ForeignKey(TipoHabitacion, on_delete=models.PROTECT)
-    latitud = models.DecimalField(max_digits=9, decimal_places=6)
-    longitud = models.DecimalField(max_digits=9, decimal_places=6)
+    latitud = models.DecimalField(max_digits=20, decimal_places=9)
+    longitud = models.DecimalField(max_digits=20, decimal_places=9)
     fechacreacion = models.DateField(auto_now_add=True)
     estado = models.TextField(default='ACTIVO') 
 

@@ -94,8 +94,8 @@
 
 <script>
     function initMap() {
-        var latitud = parseFloat("{{ publicacion.latitud }}");
-        var longitud = parseFloat("{{ publicacion.longitud }}");
+        var latitud = parseFloat("{{ publicacion.latitud }}".replace(",", "."));
+        var longitud = parseFloat("{{ publicacion.longitud }}".replace(",", "."));
         var latitud_longitud = new google.maps.LatLng(latitud, longitud);
 
         var mapa = new google.maps.Map(

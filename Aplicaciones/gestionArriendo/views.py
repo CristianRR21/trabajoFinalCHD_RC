@@ -3,7 +3,7 @@ from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.hashers import check_password
-from .models import Usuario,TipoHabitacion,Publicacion,Fotografia,Favorito,ComentarioPublicacion,Calificacion
+from .models import Usuario,TipoHabitacion,Publicacion,Fotografia,Favorito,ComentarioPublicacion,Calificacion,HistorialEliminacion
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import redirect, get_object_or_404
 from django.db.models import ProtectedError
@@ -115,9 +115,19 @@ def registrarUsuario(request):
         first_name = request.POST.get('first_name')  
         last_name = request.POST.get('last_name')    
 
-        if password != password2:
-            messages.error(request, "Las contraseñas no coinciden.")
-            return render(request, 'login/registrarUsuario.html')
+        if Usuario.objects.filter(email=email).exists():
+                messages.error(request, "El correo ya está registrado.")
+                return render(request, 'login/registrarUsuario.html')
+
+            # Validar que el nombre de usuario no esté en uso
+        if Usuario.objects.filter(username=username).exists():
+                messages.error(request, "El nombre de usuario ya existe.")
+                return render(request, 'login/registrarUsuario.html')
+
+            # Validar que el teléfono no esté en uso
+        if Usuario.objects.filter(telefono=telefono).exists():
+                messages.error(request, "El número de teléfono ya está registrado.")
+                return render(request, 'login/registrarUsuario.html')
 
         # Crear usuario
         usuario = Usuario(
@@ -127,7 +137,7 @@ def registrarUsuario(request):
             last_name=last_name,
             telefono=telefono,
             direccion=direccion,
-            password=make_password(password),  # encriptar contraseña
+            password=make_password(password),  
         )
         usuario.save()
         messages.success(request, "Usuario registrado correctamente.")
@@ -271,6 +281,34 @@ def eliminarPublicacionAdmin(request,id):
     publi.delete()
     return redirect('/publicaciones')
 
+
+def eliminarPublicacionAdmin(request, id):
+    motivo = request.POST['motivo']
+    publi = Publicacion.objects.get(id=id)
+
+    usuario = None
+    if 'usuario_id' in request.session:
+        try:
+            usuario = Usuario.objects.get(id=request.session['usuario_id'])
+        except Usuario.DoesNotExist:
+            usuario = None
+
+    HistorialEliminacion.objects.create(
+        publicacion=publi,
+        usuario=usuario,
+        motivo=motivo
+    )
+
+    fotos = Fotografia.objects.filter(publicacion=publi)
+    for foto in fotos:
+        if foto.imagen:
+            foto.imagen.delete(save=False)
+        foto.delete()
+
+    publi.delete()
+    messages.success(request, "Publicación eliminada correctamente con motivo registrado.")
+    return redirect('/publicaciones')
+   
 
 
 def eliminarFavorito(request,id):
