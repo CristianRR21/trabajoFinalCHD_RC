@@ -209,6 +209,10 @@ def guardarpublicacion(request):
             longitud=longitud,
            
         )
+        
+        usuario = Usuario.objects.get(id=request.session['usuario_id'])
+        usuario.numeroPublicaciones += 1
+        usuario.save()
 
         for index, imagen in enumerate(imagenes, start=1):
             Fotografia.objects.create(
@@ -263,12 +267,16 @@ def misFavoritos(request):
 
 def eliminarPublicacion(request,id):
     publi=Publicacion.objects.get(id=id)  
+    usuario = publi.usuario 
     fotos = Fotografia.objects.filter(publicacion=publi)
     for foto in fotos:
             if foto.imagen:
                 foto.imagen.delete(save=False)
             foto.delete()
     publi.delete()
+    if usuario.numeroPublicaciones > 0:
+        usuario.numeroPublicaciones -= 1
+        usuario.save()
     return redirect('/misPublicaciones')
 
 def eliminarPublicacionAdmin(request,id):

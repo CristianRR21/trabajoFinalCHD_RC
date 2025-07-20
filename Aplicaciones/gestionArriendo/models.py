@@ -11,6 +11,8 @@ class Usuario(AbstractUser):
     direccion = models.TextField()
     rol = models.TextField(default='Arrendatario')
     bloqueado = models.BooleanField(default=False)
+    numeroPublicaciones = models.IntegerField(default=0)
+
     def __str__(self):
         return self.username   
          
