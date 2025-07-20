@@ -1,6 +1,7 @@
-{% extends 'habitaciones/plantilla.html' %}
+{% extends 'administrador/plantilla.html' %}
 
 {% block contenido %}
+
 <!-- CSS de Owl Carousel -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
@@ -22,17 +23,7 @@
 
 <div class="container mt-4">
 
-{% if fotos %}
-<div class="owl-carousel owl-theme mt-4 mb-5">
-  {% for foto in fotos %}
-    {% if foto.imagen %}
-      <div class="item">
-        <img src="{{ foto.imagen.url }}" alt="Imagen de publicación" class="img-fluid rounded" style="max-height: 400px; object-fit: contain;">
-      </div>
-    {% endif %}
-  {% endfor %}
-</div>
-{% endif %}
+
 
   <div class="col-md-8 col-12 mb-4">
     <h4 class="mb-1 text-primary fw-bold">$ {{ publicacion.precio }} / mes</h4>
@@ -51,30 +42,17 @@
 
 
 
-
- <br><br>
-  <h1>COMENTAR</h1>
-  <form action="/guardarComentario/{{publicacion.id}}/"  method="post" id="frm_comentario">
-       {% csrf_token %}
-  <textarea id="comentario" name="comentario" rows="5" cols="50"></textarea>
-  <button type="submit">Enviar</button>
-  </form>
-
-  <h1>CALIFICAR ESCALA 1-5 </h1>
-
-  <form action="/calificarPublicacion/{{publicacion.id}}/" method="post" id="frm_calificacion">
-      {% csrf_token %}
-      <label for="calificacion">Selecciona una calificación:</label>
-      <select id="calificacion" name="calificacion" required>
-          <option value="" disabled selected>-- Escoge --</option>
-          <option value="1">1 - Muy malo</option>
-          <option value="2">2 - Malo</option>
-          <option value="3">3 - Regular</option>
-          <option value="4">4 - Bueno</option>
-          <option value="5">5 - Excelente</option>
-      </select>
-      <button type="submit">Enviar Calificación</button>
-  </form>
+{% if fotos %}
+<div class="owl-carousel owl-theme mt-4 mb-5">
+  {% for foto in fotos %}
+    {% if foto.imagen %}
+      <div class="item">
+        <img src="{{ foto.imagen.url }}" alt="Imagen de publicación" class="img-fluid rounded" style="max-height: 400px; object-fit: contain;">
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>
+{% endif %}
 
 </div>
  
@@ -130,5 +108,6 @@
         });
     }
 </script>
+
 {% endblock %}
 

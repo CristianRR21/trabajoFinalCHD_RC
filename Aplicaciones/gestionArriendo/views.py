@@ -5,6 +5,8 @@ from django.contrib.auth import login
 from django.contrib.auth.hashers import check_password
 from .models import Usuario,TipoHabitacion,Publicacion,Fotografia,Favorito,ComentarioPublicacion,Calificacion
 from django.contrib.auth.hashers import make_password
+from django.shortcuts import redirect, get_object_or_404
+from django.db.models import ProtectedError
 
 # Create your views here.
 
@@ -139,15 +141,39 @@ def nuevaPublicacion(request):
 
 #administrador
 def nuevoTipo(request):
-    return render(request,'administrador/nuevoTipo.html')
+    tipos=TipoHabitacion.objects.all()
+    return render(request,'administrador/nuevoTipo.html',{'tipos':tipos})
 
 def guardarTipo(request):
     nombre=request.POST['nombre']
     messages.success(request,"Guardado exitosamente")
     tipo=TipoHabitacion.objects.create(nombre=nombre)
-    return render(request,"administrador/index.html")
+    return redirect('/nuevoTipo')
     
 
+
+def editarTipoHabitacion(request, id):
+    tipo = get_object_or_404(TipoHabitacion, id=id)
+    if request.method == 'POST':
+        nombre = request.POST.get('nombre')
+        if nombre:
+            tipo.nombre = nombre
+            tipo.save()
+            messages.success(request, "Actualizado correctamente")
+            
+    return redirect('/nuevoTipo') 
+
+
+def eliminarTipo(request,id):
+    tipo=TipoHabitacion.objects.get(id=id)      
+    try:
+        tipo.delete()
+        messages.success(request, "Tipo de habitación eliminado correctamente.")
+    except ProtectedError:
+        messages.error(request, "No se puede eliminar porque existen publicaciones relacionadas. Eliminelas y vuelva a intentar.")
+    return redirect('/nuevoTipo')
+
+    
 def guardarpublicacion(request):
     if request.method == 'POST':
         titulo = request.POST['titulo']
@@ -235,6 +261,18 @@ def eliminarPublicacion(request,id):
     publi.delete()
     return redirect('/misPublicaciones')
 
+def eliminarPublicacionAdmin(request,id):
+    publi=Publicacion.objects.get(id=id)  
+    fotos = Fotografia.objects.filter(publicacion=publi)
+    for foto in fotos:
+            if foto.imagen:
+                foto.imagen.delete(save=False)
+            foto.delete()
+    publi.delete()
+    return redirect('/publicaciones')
+
+
+
 def eliminarFavorito(request,id):
     fav=Favorito.objects.get(id=id)      
     fav.delete()
@@ -252,6 +290,19 @@ def detallesPublicacion(request,id):
         'publicacion': publi,
         'fotos': fotos
     })
+
+
+def detallesPublicacionAdmin(request,id):
+    publi = Publicacion.objects.get(id=id)
+    fotos = Fotografia.objects.filter(publicacion=publi).order_by('orden')
+    print(f"Fotos encontradas: {fotos.count()}")  # para debug
+    return render(request, "administrador/detallesPublicacionAdmin.html", {
+        'publicacion': publi,
+        'fotos': fotos
+    })
+
+
+
 
 ##comentario
 def publicaciones(request):
@@ -406,3 +457,19 @@ def filtroTipo(request):
         'tipos': tipos,
         'tipo_seleccionado': tipo_id
     })
+
+def comentarios(request):
+    return render(request,'habitaciones/misComentarios.html')
+
+
+def misComentarios(request):
+    usuario = Usuario.objects.get(id=request.session['usuario_id'])
+    comentarios = ComentarioPublicacion.objects.filter(usuario=usuario).select_related('publicacion')
+    return render(request, "habitaciones/comentarios.html", {
+        'usuario': usuario,
+        'comentarios': comentarios
+    })
+    
+    
+def tipoHabitacion(request):
+    return render(request,'habitaciones/tipoHabitacion.html')

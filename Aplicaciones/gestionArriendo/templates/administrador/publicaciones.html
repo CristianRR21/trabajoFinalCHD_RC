@@ -2,10 +2,31 @@
 {% block contenido %}
 <!--cometario-->
 
-<h1>Publicaciones Activas</h1>
+<h1 style="text-align: center;">Publicaciones Activas</h1><br>
+  <script>
+                function confirmarEliminacion(url){
+                    Swal.fire({
+                        title: '¿Estás seguro?',
+                        text: '¡Esta acción no se puede deshacer!',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Sí, eliminar',
+                        cancelButtonText: 'Cancelar'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = url;
+                            }
+                        });
+                    }
+          </script>
 
-<table class="table table-striped table-bordered" id="tblPublicaciones">
-    <thead>
+
+<div class="table-responsive">
+    <table id="tblPublicaciones" class="table table-hover align-middle table-bordered text-center shadow-sm">
+
+         <thead class="table-primary">
         <tr>
             <th>Id</th>
             <th>Foto</th>
@@ -37,15 +58,17 @@
             <td>{{ item.tipohabitacion.nombre }}</td>
             <td>{{ item.fechacreacion }}</td>
             <td>
-                <a href="#">Ver</a> |
-                <a href="#">Eliminar</a>
+               <a href="/detallesPublicacionAdmin/{{item.id}}"><i class="fa fa-eye"></i></a>
+      
+                <a href="#"class="btn btn-outline-danger btn-sm btn-eliminar" title="Eliminar" onclick="confirmarEliminacion('/eliminarPublicacionAdmin/{{item.id}}')">
+                        <i class="fa fa-trash"></i>
             </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
 
-
+</div>
 
 
 
