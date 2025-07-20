@@ -1,8 +1,147 @@
 {% extends 'administrador/plantilla.html' %}
 {% block contenido %}
-
-
-
-
 <h4>Bienvenido:{{ usuario.first_name }} {{ usuario.last_name }}</h4>
+<style>
+    #graficoUsuariosDona {
+    max-width: 400px;
+    max-height: 400px;
+    width: 100%; 
+    height: auto;}
+
+    #graficoUsuariosBarras{
+    max-width: 400px;
+    max-height: 400px;
+    width: 100%; 
+    height: auto;
+
+   
+}
+
+</style>
+<div class="container mt-4">
+    <div class="row">
+
+        <div class="col-md-4 mb-3">
+            <div class="card text-white bg-primary shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Total Usuarios</h5>
+                    <h3>{{ total_usuarios }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card text-white bg-info shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Arrendatarios</h5>
+                    <h3>{{ total_arrendatarios }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card text-white bg-success shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Arrendadores</h5>
+                    <h3>{{ total_arrendadores }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card text-white bg-warning shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Administradores</h5>
+                    <h3>{{ total_administradores }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card text-white bg-danger shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Publicaciones</h5>
+                    <h3>{{ total_publicaciones }}</h3>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<canvas id="graficoUsuariosDona" width="200" height="200"></canvas>
+<canvas id="graficoUsuariosBarras" width="200" height="200"></canvas>
+
+
+<script>
+    const ctxBarras = document.getElementById('graficoUsuariosBarras').getContext('2d');
+
+    const datosBarras = {
+        labels: ['Total Usuarios', 'Arrendatarios', 'Arrendadores', 'Administradores', 'Publicaciones'],
+        datasets: [{
+            label: 'Cantidad',
+            data: JSON.parse('{{ grafico_data_json|escapejs }}'),
+            backgroundColor: ['#3498db', '#2ecc71', '#f1c40f', '#e74c3c', '#9b59b6']
+        }]
+    };
+
+    const configBarras = {
+        type: 'bar',
+        data: datosBarras,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                tooltip: { enabled: true }
+            },
+            scales: {
+                y: { beginAtZero: true, precision: 0 }
+            }
+        }
+    };
+
+    new Chart(ctxBarras, configBarras);
+</script>
+
+<script>
+    const ctxDona = document.getElementById('graficoUsuariosDona').getContext('2d');
+
+    const dataArray = JSON.parse('{{ grafico_data_json|escapejs }}').slice(1);
+    console.log("Datos para gráfica de dona:", dataArray);
+
+    const datosDona = {
+        labels: ['Arrendatarios', 'Arrendadores', 'Administradores'],
+        datasets: [{
+            label: 'Usuarios por Rol',
+            data: dataArray,
+            backgroundColor: [
+                '#1abc9c',
+                '#e67e22',
+                '#e74c3c'
+            ],
+            hoverOffset: 30
+        }]
+    };
+
+    const configDona = {
+        type: 'doughnut',
+        data: datosDona,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                },
+                tooltip: {
+                    enabled: true
+                }
+            }
+        }
+    };
+
+    new Chart(ctxDona, configDona);
+</script>
+
+
+
+
 {% endblock %}

@@ -7,6 +7,7 @@ from .models import Usuario,TipoHabitacion,Publicacion,Fotografia,Favorito,Comen
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import redirect, get_object_or_404
 from django.db.models import ProtectedError
+import json
 
 # Create your views here.
 
@@ -23,16 +24,7 @@ def registro(request):
 
 
 
-def administrador(request):
-    if 'usuario_id' not in request.session:
-        return redirect('/')
 
-    usuario = Usuario.objects.get(id=request.session['usuario_id'])
-
-
-    return render(request,"administrador/index.html", {
-        'usuario': usuario
-    })
 
 
 ##publicaciones disponibles
@@ -556,3 +548,29 @@ def desbloquear_usuario(request, id):
     messages.success(request, f'El usuario {usuario.username} ha sido desbloqueado.')
     return redirect('/usuariosBloqueados')  
 
+
+def administrador(request):
+    total_usuarios = Usuario.objects.count()
+    total_arrendatarios = Usuario.objects.filter(rol='Arrendatario').count()
+    total_arrendadores = Usuario.objects.filter(rol='Arrendador').count()
+    total_administradores = Usuario.objects.filter(rol='Administrador').count()
+    total_publicaciones = Publicacion.objects.count()
+
+    grafico_data = [
+        total_usuarios,
+        total_arrendatarios,
+        total_arrendadores,
+        total_administradores,
+        total_publicaciones
+    ]
+
+    resultados = {
+        'total_usuarios': total_usuarios,
+        'total_arrendatarios': total_arrendatarios,
+        'total_arrendadores': total_arrendadores,
+        'total_administradores': total_administradores,
+        'total_publicaciones': total_publicaciones,
+        'grafico_data_json': json.dumps(grafico_data)
+    }
+
+    return render(request, 'administrador/index.html', resultados)
