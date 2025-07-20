@@ -3,12 +3,18 @@ from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.hashers import check_password
-from .models import Usuario,TipoHabitacion,Publicacion,Fotografia,Favorito,ComentarioPublicacion,Calificacion,HistorialEliminacion
+from .models import Usuario,TipoHabitacion,Publicacion,Fotografia,Favorito,ComentarioPublicacion,Calificacion,HistorialEliminacion,Mensaje
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import redirect, get_object_or_404
 from django.db.models import ProtectedError
 import json
 from django.http import JsonResponse
+
+
+from django.core.mail import send_mail
+from django.conf import settings
+from django.core.mail import EmailMessage
+import mimetypes
 
 # Create your views here.
 
@@ -355,6 +361,14 @@ def eliminarPublicacionAdmin(request, id):
         if foto.imagen:
             foto.imagen.delete(save=False)
         foto.delete()
+        
+    email = EmailMessage(
+        subject='Tu publicación ha sido eliminada',
+        body=f'Estimado/a {publi.usuario.username},\n\nTu publicación "{publi.titulo}" ha sido eliminada por el administrador.\n\nMotivo: {motivo}\n\nSaludos,\nEquipo de Administración',
+        from_email=settings.EMAIL_HOST_USER,
+        to=[publi.usuario.email],
+    )
+    email.send(fail_silently=False)
 
     publi.delete()
     messages.success(request, "Publicación eliminada correctamente con motivo registrado.")
@@ -632,3 +646,77 @@ def administrador(request):
 
     return render(request, 'administrador/index.html', resultados)
 
+# Mostrar listado de mensajes
+def listarMensajes(request):
+    mensajes = Mensaje.objects.all()
+    return render(request, "listarMensajes.html", {'mensajes': mensajes})
+# Mostrar formulario de nuevo mensaje
+def nuevoMensaje(request):
+    return render(request, "nuevoMensaje.html")
+# Guardar nuevo mensaje
+
+def guardarMensaje(request):
+    destinatario = request.POST["destinatario"]
+    asunto = request.POST["asunto"]
+    mensaje_txt = request.POST["mensaje"]
+    archivo = request.FILES.get("archivo")
+    Mensaje.objects.create(
+    destinatario=destinatario,
+    asunto=asunto,
+    mensaje=mensaje_txt,
+    archivo=archivo
+    )
+    messages.success(request, "Mensaje GUARDADO exitosamente")
+    return redirect('/listarMensajes')
+
+# Eliminar mensaje
+def eliminarMensaje(request, id):
+    mensaje = Mensaje.objects.get(id=id)
+# Eliminar archivo adjunto si existe
+    if mensaje.archivo and os.path.isfile(mensaje.archivo.path):
+        os.remove(mensaje.archivo.path)
+    mensaje.delete()
+    messages.success(request, "Mensaje ELIMINADO exitosamente")
+    return redirect('/listarMensajes')
+    # Mostrar formulario de edición
+    
+def editarMensaje(request, id):
+    mensajeEditar = Mensaje.objects.get(id=id)
+    return render(request, "editarMensaje.html", {'mensajeEditar': mensajeEditar})
+# Procesar edición de mensaje
+
+
+def procesarEdicionMensaje(request):
+    id = request.POST["id"]
+    destinatario = request.POST["destinatario"]
+    asunto = request.POST["asunto"]
+    mensaje_txt = request.POST["mensaje"]
+    archivo = request.FILES.get("archivo")
+    mensaje = Mensaje.objects.get(id=id)
+    mensaje.destinatario = destinatario
+    mensaje.asunto = asunto
+    mensaje.mensaje = mensaje_txt
+    if archivo:
+        if mensaje.archivo and os.path.isfile(mensaje.archivo.path):
+            os.remove(mensaje.archivo.path)
+        mensaje.archivo = archivo
+    mensaje.save()
+    messages.success(request, "Mensaje ACTUALIZADO exitosamente")
+    return redirect('/listarMensajes')
+
+# Enviar mensaje por correo
+def enviarMensaje(request, id):
+    mensaje = get_object_or_404(Mensaje, id=id)
+    email = EmailMessage(
+        subject=mensaje.asunto,
+        body=mensaje.mensaje,
+        from_email=settings.EMAIL_HOST_USER,
+        to=[mensaje.destinatario],
+    )
+    if mensaje.archivo:
+        file_type, _ = mimetypes.guess_type(mensaje.archivo.name)
+        with open(mensaje.archivo.path, 'rb') as f:
+            email.attach(mensaje.archivo.name, f.read(), file_type)
+    email.send(fail_silently=False)
+    messages.success(request, "Mensaje ENVIADO exitosamente")
+    return redirect('/listarMensajes')

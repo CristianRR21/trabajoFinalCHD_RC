@@ -151,3 +151,13 @@ MEDIA_URL='/media/'
 MEDIA_ROOT=(os.path.join(BASE_DIR,'trabajoFinalCHD_RC/media/'))
 
 TELEGRAM_BOT_TOKEN = '8098744858:AAFH0nA0azl6kc72z57VjQchXpwyh-vTgm0'
+
+
+
+# CONFIGURACION SMTP DE GMAIL
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'cristianroblero00@gmail.com' # Tu correo electrónico
+EMAIL_HOST_PASSWORD = 'ljfl ckga maws oxwr ' 

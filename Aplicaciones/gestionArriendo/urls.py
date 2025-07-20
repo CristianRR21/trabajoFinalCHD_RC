@@ -57,7 +57,14 @@ urlpatterns = [
  
 
     path('usuariosBloqueados',views.usuariosBloqueados),
-
+    
+path('listarMensajes/', views.listarMensajes),
+path('nuevoMensaje/', views.nuevoMensaje),
+path('guardarMensaje/', views.guardarMensaje),
+path('eliminarMensaje/<int:id>/', views.eliminarMensaje),
+path('editarMensaje/<int:id>/', views.editarMensaje),
+path('procesarEdicionMensaje/', views.procesarEdicionMensaje),
+path('enviarMensaje/<int:id>/', views.enviarMensaje),
 
 
 

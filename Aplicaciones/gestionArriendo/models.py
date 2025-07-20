@@ -5,6 +5,13 @@ from django.contrib.auth.models import AbstractUser
 #from django.contrib.auth.models import AbstractUser
 # Create your models here. 
     
+class Mensaje(models.Model):
+    
+    id = models.AutoField(primary_key=True)
+    destinatario = models.EmailField()
+    asunto = models.TextField(max_length=250)
+    mensaje = models.TextField(max_length=250)
+    archivo = models.FileField(upload_to='archivos_adjuntos/', null=True,blank=True)
      
 class Usuario(AbstractUser):
     telefono = models.CharField(max_length=10)
