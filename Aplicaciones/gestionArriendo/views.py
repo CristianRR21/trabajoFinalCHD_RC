@@ -356,8 +356,15 @@ def publicaciones(request):
     })
 
 def usuarios(request):
-    usuarios = Usuario.objects.all()
+    usuarios = Usuario.objects.filter(bloqueado=False, rol='Arrendatario')
     return render(request, "administrador/usuariosActivos.html", {'usuarios': usuarios})
+
+
+def usuariosBloqueados(request):
+    usuarios = Usuario.objects.filter(bloqueado=True)
+    return render(request, "administrador/usuariosBloqueados.html", {'usuarios': usuarios})
+
+
 def favoritos(request, id):
     publi = Publicacion.objects.get(id=id)
     usuario = Usuario.objects.get(id=request.session['usuario_id'])
@@ -533,4 +540,11 @@ def bloquear_usuario(request, id):
     usuario.save()
     messages.success(request, f'El usuario {usuario.username} ha sido bloqueado.')
     return redirect('/usuarios')  
+
+def desbloquear_usuario(request, id):
+    usuario= Usuario.objects.get(id=id)
+    usuario.bloqueado = False
+    usuario.save()
+    messages.success(request, f'El usuario {usuario.username} ha sido desbloqueado.')
+    return redirect('/usuariosBloqueados')  
 

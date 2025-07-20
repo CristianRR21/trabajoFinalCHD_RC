@@ -51,12 +51,14 @@ urlpatterns = [
  path('eliminar_historial/<int:id>/', views.eliminar_historial),
  
  path('bloquear_usuario/<int:id>/', views.bloquear_usuario),
+  path('desbloquear_usuario/<int:id>/', views.desbloquear_usuario),
  
 
+    path('usuariosBloqueados',views.usuariosBloqueados),
 
 
 
-    
+
     
     
     
