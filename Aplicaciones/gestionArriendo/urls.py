@@ -45,9 +45,14 @@ urlpatterns = [
     
 
   path('detallesPublicacionAdmin/<id>',views.detallesPublicacionAdmin),
+  path('historialPublicaciones',views.historialPublicaciones),
     
-
+  
+ path('eliminar_historial/<int:id>/', views.eliminar_historial),
  
+ path('bloquear_usuario/<int:id>/', views.bloquear_usuario),
+ 
+
 
 
 

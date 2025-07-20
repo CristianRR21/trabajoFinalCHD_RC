@@ -11,7 +11,6 @@ class Usuario(AbstractUser):
     direccion = models.TextField()
     rol = models.TextField(default='Arrendatario')
     bloqueado = models.BooleanField(default=False)
-
     def __str__(self):
         return self.username   
          
@@ -44,12 +43,20 @@ class Fotografia(models.Model):
     imagen = models.ImageField(upload_to='publicaciones', null=True, blank=True)
     orden = models.IntegerField()
 
+
+    
+    
+    
+    
 class HistorialEliminacion(models.Model):
     id = models.AutoField(primary_key=True)
     publicacion = models.ForeignKey(Publicacion, on_delete=models.SET_NULL, null=True)
     usuario = models.ForeignKey(Usuario, on_delete=models.SET_NULL, null=True)
     motivo = models.TextField()
     fechaeliminacion = models.DateField(auto_now_add=True)
+    titulo_publicacion = models.CharField(max_length=255, null=True, blank=True)
+    descripcion_publicacion = models.TextField(null=True, blank=True)
+
 
 class BloqueoUsuario(models.Model):
     id = models.AutoField(primary_key=True)

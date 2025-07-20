@@ -292,12 +292,14 @@ def eliminarPublicacionAdmin(request, id):
             usuario = Usuario.objects.get(id=request.session['usuario_id'])
         except Usuario.DoesNotExist:
             usuario = None
-
+   
     HistorialEliminacion.objects.create(
-        publicacion=publi,
-        usuario=usuario,
-        motivo=motivo
-    )
+    publicacion=publi,
+    usuario=usuario,
+    motivo=motivo,
+    titulo_publicacion=publi.titulo,
+    descripcion_publicacion=publi.descripcion,
+    )   
 
     fotos = Fotografia.objects.filter(publicacion=publi)
     for foto in fotos:
@@ -511,3 +513,24 @@ def misComentarios(request):
     
 def tipoHabitacion(request):
     return render(request,'habitaciones/tipoHabitacion.html')
+
+def historialPublicaciones(request):
+    historial= HistorialEliminacion.objects.all()
+    return render(request,'administrador/historialPublicaciones.html',{'historial':historial})
+
+
+def eliminar_historial(request, id):
+    historial = HistorialEliminacion.objects.get(id=id)   
+    historial.delete()
+    messages.success(request, "Registro de historial eliminado correctamente.")
+    return redirect('/historialPublicaciones')
+
+
+
+def bloquear_usuario(request, id):
+    usuario= Usuario.objects.get(id=id)
+    usuario.bloqueado = True
+    usuario.save()
+    messages.success(request, f'El usuario {usuario.username} ha sido bloqueado.')
+    return redirect('/usuarios')  
+
