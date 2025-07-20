@@ -54,6 +54,8 @@ def habitaciones(request):
             'precio': pub.precio,
             'descripcion': pub.descripcion,
             'usuario': pub.usuario.username,
+            'telefono': pub.usuario.telefono,
+            'email':pub.usuario.email,
             'tipohabitacion': pub.tipohabitacion.nombre,
             'foto_url': foto.imagen.url if foto and foto.imagen else None
         })
@@ -287,7 +289,22 @@ def comentarios(request):
     })
 
 
-    
+
+def calificaciones(request):
+    usuario_id = request.session.get('usuario_id')
+    if not usuario_id:
+        return redirect('login') 
+
+    usuario = Usuario.objects.get(id=usuario_id)
+    calificaciones = Calificacion.objects.filter(usuario=usuario).select_related('publicacion')
+
+    return render(request, "habitaciones/calificaciones.html", {
+        'usuario': usuario,
+        'calificaciones': calificaciones
+    })
+
+
+
 
 def eliminarPublicacion(request,id):
     publi=Publicacion.objects.get(id=id)  

@@ -1,0 +1,55 @@
+{% extends 'habitaciones/plantilla.html' %}
+{% block contenido %}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Mis Calificaciones</h2>
+
+    {% if calificaciones %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover text-center shadow-sm">
+                <thead class="table-primary">
+                    <tr>
+                        <th>#</th>
+                        <th>Publicación</th>
+                        <th>Puntuación</th>
+                        <th>Fecha</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cal in calificaciones %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ cal.publicacion.titulo }}</td>
+                            <td>
+                                {% with "12345"|make_list as stars %}
+                                    {% for i in stars %}
+                                        {% if forloop.counter <= cal.puntuacion %}
+                                            <i class="fas fa-star text-warning"></i>
+                                        {% else %}
+                                            <i class="far fa-star text-warning"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endwith %}
+                                <span class="text-muted ms-1">({{ cal.puntuacion }}/5)</span>
+                            </td>
+                            <td>{{ cal.fecha|date:"d/m/Y" }}</td>
+                            <td>
+                                <a href="">EDITAR</a>
+                                <a href="">ELIMINAR</a>
+
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center">
+            Aún no has calificado ninguna publicación.
+        </div>
+    {% endif %}
+</div>
+
+
+{% endblock %}

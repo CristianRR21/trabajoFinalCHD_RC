@@ -37,6 +37,8 @@ urlpatterns = [
     path('filtroTipo/', views.filtroTipo, name='filtro_tipo'),
 
     path('comentarios',views.comentarios),
+    path('calificaciones',views.calificaciones),
+    
     path('tipohabitacion',views.tipoHabitacion),
     path('editarTipoHabitacion/<int:id>/',views.editarTipoHabitacion),
     path('eliminarTipo/<id>',views.eliminarTipo),

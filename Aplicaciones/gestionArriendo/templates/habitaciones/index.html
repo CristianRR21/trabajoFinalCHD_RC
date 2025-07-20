@@ -81,8 +81,14 @@
           <p class="mt-1" style="font-size: 15px;">{{ pub.descripcion|truncatechars:150 }}</p>
           <hr>
           <p class="mt-1"><strong>Publicado por:</strong> {{ pub.usuario }}</p> 
-              <a href="https://wa.me/{{ pub.whatsapp }}" target="_blank" class="btn btn-success mt-2">
-            WhatsApp
+          
+          <p class="mt-1"><strong>Publicado por:</strong> {{ pub.email }}</p> 
+
+         <a href="https://wa.me/593{{ pub.telefono|slice:'1:' }}" target="_blank" class="btn btn-success mt-2">
+          <i class="fab fa-whatsapp"></i> WhatsApp
+        </a>
+                    
+
           </a>
                 
         </div>
