@@ -1,6 +1,12 @@
 {% extends 'habitaciones/plantilla.html' %}
 {% block contenido %}
 <br>
+{% if usuario %}
+    <p>Hola, {{ usuario.username }}!</p>
+{% else %}
+    <p>No has iniciado sesión</p>
+{% endif %}
+          
 
 <style>
   .tarjeta-publicacion {

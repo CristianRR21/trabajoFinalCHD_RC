@@ -8,6 +8,7 @@ from django.contrib.auth.hashers import make_password
 from django.shortcuts import redirect, get_object_or_404
 from django.db.models import ProtectedError
 import json
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -34,9 +35,15 @@ def habitaciones(request):
         return redirect('/')
 
     usuario = Usuario.objects.get(id=request.session['usuario_id'])
-
-    publicaciones = Publicacion.objects.filter(estado='ACTIVO').select_related('usuario', 'tipohabitacion')
+    publicaciones = Publicacion.objects.filter(estado='ACTIVO').exclude(usuario=usuario).select_related('usuario', 'tipohabitacion')
     tipos=TipoHabitacion.objects.all()
+
+    favoritos_ids = Favorito.objects.filter(usuario=usuario).values_list('publicacion_id', flat=True)
+    
+    comentarios_pub_ids = ComentarioPublicacion.objects.filter(usuario=usuario).values_list('publicacion_id', flat=True)
+    
+    calificaciones_pub_ids = Calificacion.objects.filter(usuario=usuario).values_list('publicacion_id', flat=True)
+    
 
     data = []
     for pub in publicaciones:
@@ -45,15 +52,20 @@ def habitaciones(request):
             'id': pub.id,
             'titulo': pub.titulo,
             'precio': pub.precio,
-            'descripcion': pub.descripcion,          
+            'descripcion': pub.descripcion,
             'usuario': pub.usuario.username,
+            'tipohabitacion': pub.tipohabitacion.nombre,
             'foto_url': foto.imagen.url if foto and foto.imagen else None
         })
 
     return render(request, "habitaciones/index.html", {
         'usuario': usuario,
         'publicaciones': data,
-        'tipos':tipos
+        'tipos': tipos,
+        'favoritos_ids': set(favoritos_ids),  
+        'comentarios_pub_ids': set(comentarios_pub_ids),
+        'calificaciones_pub_ids': set(calificaciones_pub_ids),
+        # set para búsqueda rápida en el template
     })
 
 
@@ -256,6 +268,26 @@ def misFavoritos(request):
         'usuario': usuario,
         'favoritos': favoritos
     })
+    
+    
+ 
+
+
+def comentarios(request):
+    usuario_id = request.session.get('usuario_id')
+    if not usuario_id:
+        return redirect('login') 
+
+    usuario = Usuario.objects.get(id=usuario_id)
+    comentarios = ComentarioPublicacion.objects.filter(usuario=usuario).select_related('publicacion')
+
+    return render(request, "habitaciones/comentarios.html", {
+        'usuario': usuario,
+        'comentarios': comentarios
+    })
+
+
+    
 
 def eliminarPublicacion(request,id):
     publi=Publicacion.objects.get(id=id)  
@@ -368,16 +400,29 @@ def usuariosBloqueados(request):
 def favoritos(request, id):
     publi = Publicacion.objects.get(id=id)
     usuario = Usuario.objects.get(id=request.session['usuario_id'])
-    messages.success(request, "Añadido exitosamente")  
-    favorito = Favorito.objects.create(usuario=usuario, publicacion=publi)  
+    favorito_existente = Favorito.objects.filter(usuario=usuario, publicacion=publi).first()
+    if favorito_existente:
+        messages.warning(request, "Esta publicación ya está en tus favoritos.")
+    else:
+        Favorito.objects.create(usuario=usuario, publicacion=publi)
+        messages.success(request, "Añadido exitosamente a favoritos.")
+
     return redirect('/habitaciones')
 
 def guardarComentario(request, id):
-    publi = Publicacion.objects.get(id=id)
-    usuario = Usuario.objects.get(id=request.session['usuario_id'])
-    comentario=request.POST.get('comentario')
-    messages.success(request, "Añadido exitosamente")  
-    comentario = ComentarioPublicacion.objects.create(publicacion=publi,usuario=usuario,texto=comentario)  
+    if request.method == 'POST':
+        publi = get_object_or_404(Publicacion, id=id)
+        usuario = get_object_or_404(Usuario, id=request.session['usuario_id'])
+        texto = request.POST.get('comentario')
+
+        # Evitar duplicados: solo un comentario por usuario por publicación
+        existe = ComentarioPublicacion.objects.filter(usuario=usuario, publicacion=publi).exists()
+        if not existe:
+            ComentarioPublicacion.objects.create(usuario=usuario, publicacion=publi, texto=texto)
+            messages.success(request, "Comentario agregado.")
+        else:
+            messages.warning(request, "Ya tienes un comentario en esta publicación.")
+
     return redirect('/habitaciones')
 
 
@@ -385,8 +430,15 @@ def calificarPublicacion(request, id):
     publi = Publicacion.objects.get(id=id)
     usuario = Usuario.objects.get(id=request.session['usuario_id'])
     puntuacion=request.POST.get('calificacion')
-    messages.success(request, "Calificado exitosamente")  
-    puntuacion = Calificacion.objects.create(usuario=usuario,publicacion=publi,puntuacion=puntuacion)  
+    existe = Calificacion.objects.filter(usuario=usuario, publicacion=publi).exists()  
+        
+    if not existe:
+            puntuacion = Calificacion.objects.create(usuario=usuario,publicacion=publi,puntuacion=puntuacion)  
+            messages.success(request, "Calificado exitosamente")  
+    else:
+        
+            messages.warning(request, "Ya tienes una calificacion en esta publicación.")
+       
     return redirect('/habitaciones')
 
 # region EDITAR PUBLICACION
@@ -505,18 +557,6 @@ def filtroTipo(request):
         'tipo_seleccionado': tipo_id
     })
 
-def comentarios(request):
-    return render(request,'habitaciones/misComentarios.html')
-
-
-def misComentarios(request):
-    usuario = Usuario.objects.get(id=request.session['usuario_id'])
-    comentarios = ComentarioPublicacion.objects.filter(usuario=usuario).select_related('publicacion')
-    return render(request, "habitaciones/comentarios.html", {
-        'usuario': usuario,
-        'comentarios': comentarios
-    })
-    
     
 def tipoHabitacion(request):
     return render(request,'habitaciones/tipoHabitacion.html')

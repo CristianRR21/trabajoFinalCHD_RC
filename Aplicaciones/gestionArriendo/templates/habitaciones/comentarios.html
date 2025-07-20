@@ -1,0 +1,53 @@
+{% extends 'habitaciones/plantilla.html' %}
+{% block contenido %}
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Mis Comentarios</h2>
+
+    {% if comentarios %}
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Publicación</th>
+                <th>Comentario</th>
+                <th>Fecha</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for comentario in comentarios %}
+            <tr>
+                <td>{{ comentario.publicacion.titulo }}</td>
+                <td>{{ comentario.texto }}</td>
+                <td>{{ comentario.fecha|date:"d/m/Y" }}</td>
+
+                <td>
+                    <a href="#" class="btn btn-outline-danger btn-sm" onclick="confirmarEliminacion('/eliminarComentario/{{ comentario.id }}/')">🗑️ Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="alert alert-info text-center">No has hecho comentarios aún.</div>
+    {% endif %}
+</div>
+
+<script>
+function confirmarEliminacion(url){
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: '¡Esta acción no se puede deshacer!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = url;
+        }
+    });
+}
+</script>
+{% endblock %}

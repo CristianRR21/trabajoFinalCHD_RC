@@ -228,6 +228,22 @@
   <script src="https://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
 
   <!-- Estilos adicionales -->
+{% if messages %}
+    {% for mensaje in messages %}
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            Swal.fire({
+                title: "{% if 'error' in mensaje.tags %}Error{% elif 'warning' in mensaje.tags %}Advertencia{% elif 'success' in mensaje.tags %}Éxito{% else %}Información{% endif %}",
+                text: "{{ mensaje|escapejs }}",
+                icon: "{% if 'error' in mensaje.tags %}error{% elif 'warning' in mensaje.tags %}warning{% elif 'success' in mensaje.tags %}success{% else %}info{% endif %}",
+                confirmButtonText: 'Aceptar'
+            });
+        </script>
+    {% endfor %}
+{% endif %}
+
+
+
   <style>
     .error {
       color: red;
