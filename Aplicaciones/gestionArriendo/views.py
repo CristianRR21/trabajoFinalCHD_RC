@@ -574,3 +574,4 @@ def administrador(request):
     }
 
     return render(request, 'administrador/index.html', resultados)
+

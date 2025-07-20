@@ -59,10 +59,7 @@ urlpatterns = [
 
 
 
-    
-    
-    
-    
+
 
     
 
