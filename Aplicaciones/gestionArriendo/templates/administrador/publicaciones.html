@@ -2,14 +2,10 @@
 {% block contenido %}
 <!--cometario-->
 
-{% if usuario %}
-    <p>Hola, {{ usuario.username }}!</p>
-{% else %}
-    <p>No has iniciado sesión</p>
-{% endif %}
 
 
-<h1 style="text-align: center;">Publicaciones Activas</h1><br>
+<h2 style="text-align: center; font-family: 'Montserrat', sans-serif;">Publicaciones Activas</h2><br>
+
   <script>
                 function confirmarEliminacion(url){
                     Swal.fire({

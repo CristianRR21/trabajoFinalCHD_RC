@@ -100,9 +100,13 @@
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/administrador">
                
-                <div class="sidebar-brand-text mx-3">NOMBRE- ICONO APLICACION</div>
+                <div class="sidebar-brand-text mx-3">RoomSpace</div>
+                <img src="{% static 'plantilla/administrador/img/logo.jpg' %}" alt="Logo RoomSpace"
+                                    style="width: 400%; height: 400%; object-fit: contain; display: block; margin: 0 auto 10px;">
             </a>
 
+
+           
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
@@ -133,6 +137,8 @@
                         <h6 class="collapse-header">Opciones</h6>
                         <a class="collapse-item" href="/publicaciones">Publicaciones Activas</a>
                         <a class="collapse-item" href="/historialPublicaciones">Publicaciones Eliminadas</a>
+                        
+                        
                     </div>
                 </div>
             </li>
@@ -161,7 +167,7 @@
 
             <!-- Heading -->
             <div class="sidebar-heading">
-               Gestión de Usuarios edit
+               Gestión de Usuarios
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
@@ -393,17 +399,14 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
-                                <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ usuario.username }}</span>
+
+                                <img class="img-profile rounded-circle" src="{% static 'plantilla/administrador/img/undraw_profile.svg' %}">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Perfil
-                                </a>
+                               
                                 <!--
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -438,7 +441,7 @@
               <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Todos los derechos reservados © 2025 | ArriendaYA !!!</span>
+                        <span>Todos los derechos reservados © 2025 | RoomSpace !!!</span>
                     </div>
                 </div>
             </footer>

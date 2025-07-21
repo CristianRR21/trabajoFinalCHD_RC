@@ -1,16 +1,12 @@
 {% extends 'administrador/plantilla.html' %}
 {% block contenido %}
 <!--cometario-->
-{% if usuario %}
-    <p>Hola, {{ usuario.username }}!</p>
-{% else %}
-    <p>No has iniciado sesión</p>
-{% endif %}
 
-<h1 class="text-center my-4">Usuarios Bloqueados</h1>
+
+<h2 style="text-align: center; font-family: 'Montserrat', sans-serif;">Usuarios Bloqueados</h2><br>
 
 <table class="table table-striped table-bordered" id="tblUsuariosB" >
-    <thead class="table-dark">
+    <thead class="table-primary">
         <tr>
             <th>ID</th>
             <th>Nombre de usuario</th>
@@ -18,7 +14,7 @@
             <th>Teléfono</th>
             <th>Dirección</th>
             <th>Rol</th>
-            <th>Rolaa</th>
+
 
             <th>Acciones</th>
         </tr>
@@ -32,14 +28,15 @@
             <td>{{ user.telefono }}</td>
             <td>{{ user.direccion }}</td>
             <td>{{ user.rol }}</td>
-            <td>{{ user.bloqueado}}</td>
+    
 
+
+         
 
             <td>
-      
-                <button class="btn btn-danger btn-sm" onclick="confirmarEliminacion('{{ user.id }}')">
-                    Desbloquear                             
-                </button>
+            <button class="btn btn-success btn-sm d-flex align-items-center gap-1" onclick="confirmarEliminacion('{{ user.id }}')" title="Desbloquear usuario">
+                <i class="fa fa-lock-open"></i> Desbloquear
+            </button>
             </td>
 
             

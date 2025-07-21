@@ -1,45 +1,7 @@
 {% extends 'administrador/plantilla.html' %}
 {% block contenido %}
-<h2>Historial de Eliminaciones</h2>
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>ID</th>
-
-            <th>Título Publicación</th>
-            <th>Descripción Publicación</th>
-         
-            <th>Motivo</th>
-            <th>Fecha Eliminación</th>
-            <th>Usuario que Eliminó</th>
-            <th>Acciones</th>
-
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in historial %}
-        <tr>            
-            <td>{{ item.titulo_publicacion }}</td>
-            <td>{{ item.descripcion_publicacion }}</td>
-            <td>{{ item.motivo }}</td>
-            <td>{{ item.fechaeliminacion }}</td>
-            <td>{{ item.fechaeliminacion }}</td>
-            <td>{{ item.usuario.username }}</td>
-            <td>
-             <button class="btn btn-danger btn-sm" onclick="confirmarEliminacion('{{ item.id }}')">
-                    Eliminar
-                </button>
-                </td>
-
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="7">No hay registros de eliminaciones.</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<h2 style="text-align: center; font-family: 'Montserrat', sans-serif;">Historial de Eliminaciones</h2><br>
 <script>
     function confirmarEliminacion(id) {
         Swal.fire({
@@ -58,4 +20,61 @@
         })
     }
 </script>
+
+
+<table class="table table-striped" id="tbl">
+     <thead class="table-primary">
+        <tr>
+            <th>ID</th>
+
+            <th>Título Publicación</th>
+            <th>Descripción Publicación</th>
+         
+            <th>Motivo</th>
+            <th>Fecha Eliminación</th>
+            <th>Usuario que Eliminó</th>
+            <th>Acciones</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in historial %}
+        <tr>        
+            <td>{{ item.id }}</td>    
+            <td>{{ item.titulo_publicacion }}</td>
+            <td>{{ item.descripcion_publicacion }}</td>
+            <td>{{ item.motivo }}</td>
+            <td>{{ item.fechaeliminacion }}</td>
+            <td>{{ item.usuario.username }}</td>
+            <td>
+             <button class="btn btn-danger btn-sm" onclick="confirmarEliminacion('{{ item.id }}')">
+                    Eliminar
+                </button>
+                </td>
+
+        </tr>
+       
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+$(document).ready(function() {
+    let table = new DataTable('#tbl', {
+        language: {
+            url: 'https://cdn.datatables.net/plug-ins/2.3.1/i18n/es-ES.json'
+        },
+        dom: 'Bfrtip', 
+        buttons: [
+            'copy',
+            'csv',
+            'excel',
+            'pdf',
+            'print'
+        ]
+    });
+});
+</script>
+
+
 {% endblock %}
