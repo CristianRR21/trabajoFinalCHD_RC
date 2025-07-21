@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Aplicaciones.gestionArriendo',
+    'pwa',
 ]
 
 AUTH_USER_MODEL = 'gestionArriendo.Usuario'
@@ -162,3 +163,33 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'cristianroblero00@gmail.com' # Tu correo electrónico
 EMAIL_HOST_PASSWORD = 'ljfl ckga maws oxwr ' 
+
+PWA_APP_NAME = 'Mi Aplicación PWA'
+PWA_APP_SHORT_NAME = 'MiApp'
+PWA_APP_DESCRIPTION = "Esta es mi app progresiva"
+PWA_APP_THEME_COLOR = '#317EFB'
+PWA_APP_BACKGROUND_COLOR = '#FFFFFF'
+PWA_APP_DISPLAY = 'standalone'
+PWA_APP_SCOPE = '/'
+PWA_APP_ORIENTATION = 'portrait'
+PWA_APP_START_URL = '/'
+PWA_APP_STATUS_BAR_COLOR = 'default'
+
+PWA_APP_ICONS = [
+    {'src': '/static/plantilla/pwa/icons/icon-192.png', 'sizes': '192x192'},
+    {'src': '/static/plantilla/pwa/icons/icon-512.png', 'sizes': '512x512'},
+]
+
+PWA_APP_ICONS_APPLE = [
+    {'src': '/static/plantilla/pwa/icons/icon-192.png', 'sizes': '192x192'},
+    {'src': '/static/plantilla/pwa/icons/icon-512.png', 'sizes': '512x512'},
+]
+
+PWA_APP_SPLASH_SCREEN = [
+    {
+        
+        'media': '(device-width: 640px) and (device-height: 1136px)'
+    }
+]
+
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'static', 'plantilla', 'pwa', 'js', 'serviceworker.js')
