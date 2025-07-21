@@ -79,7 +79,6 @@ WSGI_APPLICATION = 'trabajoFinalCHD_RC.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-'''
 
 DATABASES = {
     'default': {
@@ -101,6 +100,8 @@ DATABASES = {
         'NAME': BASE_DIR / 'trabajoArriendo.sqlite3',
     }
 }
+'''
+
 
 
 # Password validation
