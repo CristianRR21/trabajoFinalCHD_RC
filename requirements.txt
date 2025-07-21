@@ -1,4 +1,4 @@
-pip install Django==5.2
-pip install psycopg2-binary==2.9.10
-pip install gunicorn==20.1.0
-pip install django-pwa==2.0.1
+Django==5.2
+psycopg2-binary==2.9.10
+gunicorn==20.1.0
+django-pwa==2.0.1
