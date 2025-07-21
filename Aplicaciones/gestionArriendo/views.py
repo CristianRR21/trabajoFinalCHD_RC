@@ -775,3 +775,10 @@ def eliminarComentario(request, id):
     comentario = get_object_or_404(ComentarioPublicacion, id=id)
     comentario.delete()
     return redirect('/comentarios') 
+
+
+    
+def eliminarCalificacion(request, id):
+    cali = get_object_or_404(Calificacion, id=id)
+    cali.delete()
+    return redirect('/calificaciones') 
