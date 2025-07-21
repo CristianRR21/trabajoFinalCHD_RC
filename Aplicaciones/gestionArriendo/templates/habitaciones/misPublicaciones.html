@@ -1,12 +1,8 @@
 {% extends 'habitaciones/plantilla.html' %}
 {% block contenido %}
 <br>
-{% if usuario %}
-    <p>Hola, {{ usuario.username }}!</p>
-{% else %}
-    <p>No has iniciado sesión</p>
-{% endif %}
-          
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
 <style>
   .tarjeta-publicacion {
@@ -37,22 +33,28 @@
         </div>
         <!-- Detalles centrales -->
         <div class="col-md-8 col-12">
-          <h4 class="mb-1 text-primary fw-bold">$ {{ pub.precio }} / mes</h4>
-          <h5>{{ pub.titulo }}</h5>
+         
+  <p class="mb-1 text-primary fw-bold"><strong>Precio: $</strong> {{ pub.precio }} / mes</p>
+           <p class="mb-1"><strong>Titulo:</strong> {{ pub.titulo }}</p>
           <p class="mb-1"><strong>Tipo:</strong> {{ pub.tipo }}</p>
-          <p class="mb-1" style="font-size: 15px;">{{ pub.descripcion|truncatechars:150 }}</p>
+          <p class="mb-1"><strong>Descripción:</strong> {{ pub.descripcion|truncatechars:150 }}</p>
+
+
         </div>
 
     
         <div class="col-md-2 col-12 d-flex flex-column align-items-start justify-content-center gap-2 mt-3 mt-md-0">
           
-          <a href="editarPublicacion/{{pub.id}}" class="btn btn-outline-warning btn-sm w-100" title="Editar publicación">
-            ✏️ Editar
-          </a>          
-            <br>
-          <a href="#" class="btn btn-outline-warning btn-sm w-100" title="Eliminar publicación" onclick="confirmarEliminacion('/eliminarPublicacion/{{pub.id}}')">
-            🗑️ Eliminar
-          </a>
+<div class="d-flex gap-2">
+  <br><br>
+  <a href="editarPublicacion/{{pub.id}}" class="btn btn-warning btn-sm flex-fill" title="Editar publicación">
+    <i class="bi bi-pencil-square"></i> Editar
+  </a>
+
+  <a href="#" class="btn btn-danger btn-sm flex-fill" title="Eliminar publicación" onclick="confirmarEliminacion('/eliminarPublicacion/{{pub.id}}')">
+    <i class="bi bi-trash"></i> Eliminar
+  </a>
+</div>
           
           <script>
                 function confirmarEliminacion(url){

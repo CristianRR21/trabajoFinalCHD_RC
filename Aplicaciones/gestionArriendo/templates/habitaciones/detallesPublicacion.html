@@ -37,15 +37,26 @@
 {% endif %}
 
   <div class="col-md-8 col-12 mb-4">
-    <h4 class="mb-1 text-primary fw-bold">$ {{ publicacion.precio }} / mes</h4>
-    <h5>{{ publicacion.titulo }}</h5>
-    <p class="mb-1"><strong>Tipo:</strong> {{ publicacion.tipohabitacion.nombre }}</p>
-    <p class="mb-1" style="font-size: 15px;">{{ publicacion.descripcion }}</p>
+  
+
+        <h2 ><strong>Precio:</strong> $ {{ publicacion.precio  }} / mes</h2>
+          
+          <p class="mt-1"><strong>Título:</strong> {{  publicacion.titulo}}</p>          
+
+          <p class="mt-1"><strong>Tipo:</strong> {{ publicacion.tipohabitacion.nombre}}</p>           
+          <p class="mt-1" style="font-size: 15px;"><strong>Descripción:</strong> {{ publicacion.descripcion|truncatechars:150 }}</p>
+          <hr>
+  
+
+
   </div>
+ 
 
 
  <br><br> <br><br> <br><br>
   <div class="mb-5">
+    <br>
+             <h2><strong>Ubicación:</strong> </h2>
 
     <div class="" id="mapa_cliente" style="border:1px solid black; height:300px;
     width:100%"> </div>
@@ -54,34 +65,57 @@
 
 
 
- <br><br>
-  <h1>COMENTAR</h1>
-  <form action="/guardarComentario/{{publicacion.id}}/"  method="post" id="frm_comentario">
-       {% csrf_token %}
-  <textarea id="comentario" name="comentario" rows="5" cols="50"></textarea>
-  <button type="submit">Enviar</button>
-  </form>
 
 
+  <br><br>
 
+<div class="container mt-5">
+  <!-- Sección de Comentarios -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">Deja un comentario</h5>
+    </div>
+    <div class="card-body">
+      <form action="/guardarComentario/{{ publicacion.id }}/" method="post" id="frm_comentario">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="comentario" class="form-label">Tu comentario:</label>
+          <textarea id="comentario" name="comentario" class="form-control" rows="4" placeholder="Escribe tu opinión..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">
+          <i class="fas fa-comment-dots"></i> Enviar Comentario
+        </button>
+      </form>
+    </div>
+  </div><br>
 
-  
+  <!-- Sección de Calificación -->
+  <div class="card shadow-sm">
+    <div class="card-header bg-warning text-dark">
+      <h5 class="mb-0">Califica esta publicación</h5>
+    </div>
+    <div class="card-body">
+      <form action="/calificarPublicacion/{{ publicacion.id }}/" method="post" id="frm_calificacion">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="calificacion" class="form-label">Selecciona una calificación:</label>
+          <select id="calificacion" name="calificacion" class="form-select" required>
+            <option value="" disabled selected>-- Escoge una opción --</option>
+            <option value="1">1 - Muy malo</option>
+            <option value="2">2 - Malo</option>
+            <option value="3">3 - Regular</option>
+            <option value="4">4 - Bueno</option>
+            <option value="5">5 - Excelente</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-star"></i> Enviar Calificación
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
 
-  <h1>CALIFICAR ESCALA 1-5 </h1>
-
-  <form action="/calificarPublicacion/{{publicacion.id}}/" method="post" id="frm_calificacion">
-      {% csrf_token %}
-      <label for="calificacion">Selecciona una calificación:</label>
-      <select id="calificacion" name="calificacion" required>
-          <option value="" disabled selected>-- Escoge --</option>
-          <option value="1">1 - Muy malo</option>
-          <option value="2">2 - Malo</option>
-          <option value="3">3 - Regular</option>
-          <option value="4">4 - Bueno</option>
-          <option value="5">5 - Excelente</option>
-      </select>
-      <button type="submit">Enviar Calificación</button>
-  </form>
 
 </div>
  

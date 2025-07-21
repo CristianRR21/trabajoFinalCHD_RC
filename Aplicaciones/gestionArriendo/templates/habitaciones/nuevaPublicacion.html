@@ -22,14 +22,21 @@
             </div>
 
             <div class="col-md-6 mb-3">
-                <label for="tipohabitacion" class="form-label">Tipo de habitación</label><br>
-                <select name="tipohabitacion" id="tipohabitacion" class="form-select">
-                    <option value="">---- Seleccione una opción ----</option>
-                    {% for tipo in tipos %}
-                        <option value="{{ tipo.id }}">{{ tipo.nombre }}</option>
-                    {% endfor %}
-                </select>
+            <label class="form-label">Tipo de habitación</label><br>
+            
+            <select name="tipohabitacion" id="tipohabitacion"
+        class="form-select selectpicker"
+        data-style="btn-outline-primary"
+        data-live-search="true"
+ 
+        >
+
+                {% for tipo in tipos %}
+                    <option value="{{ tipo.id }}">{{ tipo.nombre }}</option>
+                {% endfor %}
+            </select>
             </div>
+
         </div>
         <br>
 
@@ -122,7 +129,7 @@
 </script>
 
 <script>
-    
+
         $("#frm_publicacion").validate({
             rules: {
                 titulo: {
@@ -142,8 +149,8 @@
                     minlength: 10,
                     maxlength: 500
                 },
-                tipohabitacion: {
-                    required: true
+                "tipohabitacion": {
+                   required: true
                 },
                 latitud: {
                     required: true
@@ -177,7 +184,7 @@
                     minlength: "Debe tener al menos 10 caracteres",
                     maxlength: "No debe exceder los 500 caracteres"
                 },
-                tipohabitacion: {
+                "tipohabitacion": {
                     required: "Seleccione una opción"
                 },
                 latitud: {
@@ -195,6 +202,11 @@
             }
         });
   
+</script>
+<script>
+  $(document).ready(function () {
+    $('.selectpicker').selectpicker();
+  });
 </script>
 
 

@@ -35,7 +35,6 @@ def registro(request):
 
 
 ##publicaciones disponibles
-
 def habitaciones(request):
     if 'usuario_id' not in request.session:
         return redirect('/')
@@ -324,6 +323,8 @@ def eliminarPublicacion(request,id):
     if usuario.numeroPublicaciones > 0:
         usuario.numeroPublicaciones -= 1
         usuario.save()
+    messages.success(request, "Publicación eliminada correctamente.")
+    
     return redirect('/misPublicaciones')
 
 def eliminarPublicacionAdmin(request,id):
@@ -769,3 +770,8 @@ def eliminarAdmin(request, id):
         
         
         return JsonResponse({'mensaje': 'Administrador eliminado'})
+    
+def eliminarComentario(request, id):
+    comentario = get_object_or_404(ComentarioPublicacion, id=id)
+    comentario.delete()
+    return redirect('/comentarios') 

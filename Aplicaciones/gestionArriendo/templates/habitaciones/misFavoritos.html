@@ -43,9 +43,24 @@
                 </td>
                 <td>{{ fav.fechaagregado }}</td>
                 <td>
-                    <a href="#" class="btn btn-outline-warning btn-sm w-100" title="Eliminar" onclick="confirmarEliminacion('/eliminarFavorito/{{fav.id}}')">
-                        🗑️ Eliminar
+                    <a href="#"  class="btn btn-sm btn-danger d-flex align-items-center gap-1"  title="Eliminar" onclick="confirmarEliminacion('/eliminarFavorito/{{fav.id}}')">
+                        <i class="bi bi-trash"></i> Eliminar
                     </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 </td>
             </tr>
             {% endfor %}

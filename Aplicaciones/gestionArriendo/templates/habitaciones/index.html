@@ -21,6 +21,16 @@
    .detalle-publicacion h3 {
     margin: 0.2rem 0;
   }  
+   .bootstrap-select .bs-searchbox input {
+    border: 2px solid #0d6efd; /* Color azul Bootstrap */
+    border-radius: 10px;
+    outline: none;
+    box-shadow: none; /* Elimina el borde azul al hacer focus */
+  }
+
+  .bootstrap-select .bs-searchbox input:focus {
+    border-color: #6610f2; /* Cambia de color al enfocar */
+  }
   
 </style>
 
@@ -30,17 +40,18 @@
     <!-- Buscador -->
     <div class="col-md-6">
       <form method="GET" action="/buscar" class="d-flex align-items-center">
-        <input type="text" name="buscar" id="buscar" class="form-control"  style="border-radius: 10px; height: 50px;" placeholder="Buscar publicaciones..." value="{{ termino_busqueda|default:'' }}">
+        <input type="text" name="buscar" id="buscar" class="form-control" style="border-radius: 10px; height: 50px;" placeholder="Buscar publicaciones..." value="{{ termino_busqueda|default:'' }}">
         <br>
         <button type="submit" class="btn btn-success ms-2">Buscar</button>
         <button type="button" onclick="window.location.href='/habitaciones'" class="btn btn-outline-secondary ms-2">Limpiar</button>
       </form>
     </div>
 
+
     <!-- Filtro por tipo -->
-   <div class="col-md-6">
+    <div class="col-md-6">
       <form method="GET" action="/filtroTipo" class="d-flex align-items-center">
-        <select name="tipo" class="form-select" style="border-radius: 10px; height: 50px;" onchange="this.form.submit()">          
+        <select name="tipo" class="selectpicker form-select" data-live-search="true" data-style="btn-outline-primary" style="border-radius: 10px; height: 50px;" onchange="this.form.submit()">
           {% for tipo in tipos %}
             <option value="{{ tipo.id }}">{{ tipo.nombre }}</option>
           {% endfor %}
@@ -74,15 +85,17 @@
         </a>
 
         <!-- Detalles centrales -->
-       <div class="col-md-6 col-12 detalle-publicacion">      
-          <h2 >$ {{ pub.precio }} / mes</h2>
-          <h2 >{{ pub.titulo }}</h2>
-          <p class="mt-1"><strong>Tipo:</strong> {{ pub.tipohabitacion}}</p>          
-          <p class="mt-1" style="font-size: 15px;">{{ pub.descripcion|truncatechars:150 }}</p>
+       <div class="col-md-6 col-12 detalle-publicacion">  
+            
+          <h2 ><strong>Precio:</strong> $ {{ pub.precio }} / mes</h2>
+          
+          <p class="mt-1"><strong>Título:</strong> {{ pub.titulo}}</p>          
+
+          <p class="mt-1"><strong>Tipo:</strong> {{ pub.tipohabitacion}}</p>           
+          <p class="mt-1" style="font-size: 15px;"><strong>Descripción:</strong> {{ pub.descripcion|truncatechars:150 }}</p>
           <hr>
           <p class="mt-1"><strong>Publicado por:</strong> {{ pub.usuario }}</p> 
-          
-          <p class="mt-1"><strong>Publicado por:</strong> {{ pub.email }}</p> 
+   
 
          <a href="https://wa.me/593{{ pub.telefono|slice:'1:' }}" target="_blank" class="btn btn-success mt-2">
           <i class="fab fa-whatsapp"></i> WhatsApp
@@ -111,6 +124,31 @@
   {% endif %}
 </div>
 <br><br>
+<script>
+  $(document).ready(function () {
+    $('.selectpicker').selectpicker();
+  });
+</script>
+<script>
+  $(function () {
+    $("#buscar").autocomplete({
+      source: function (request, response) {
+        $.ajax({
+          url: "/sugerencias",  // Ruta que retorna sugerencias en formato JSON
+          dataType: "json",
+          data: {
+            term: request.term
+          },
+          success: function (data) {
+            response(data);
+          }
+        });
+      },
+      minLength: 2, // Mínimo 2 letras para empezar a sugerir
+    });
+  });
+</script>
+
 {% endblock %}
 
 

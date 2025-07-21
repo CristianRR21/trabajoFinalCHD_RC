@@ -1,11 +1,20 @@
 {% extends 'habitaciones/plantilla.html' %}
 {% block contenido %}
 <div class="container mt-4">
-    <h2 class="text-center mb-4">Mis Comentarios</h2>
+    
+   <style>
+    .thead-importante {
+    background-color: #cfe2ff !important; 
+    color: #084298 !important;            
+}
 
+   </style>
+
+    <h2 style="text-align: center; font-family: 'Montserrat', sans-serif;">Mis Comentarios</h2><br>
     {% if comentarios %}
-    <table class="table table-striped table-bordered">
-        <thead class="table-dark">
+
+    <table class="table table-striped table-bordered" id="tbl">
+         <thead class="thead-importante">
             <tr>
                 <th>Publicación</th>
                 <th>Comentario</th>
@@ -19,10 +28,17 @@
                 <td>{{ comentario.publicacion.titulo }}</td>
                 <td>{{ comentario.texto }}</td>
                 <td>{{ comentario.fecha|date:"d/m/Y" }}</td>
+    <td>
+        <button 
+            type="button" 
+            class="btn btn-sm btn-danger d-flex align-items-center gap-1" 
+            onclick="confirmarEliminacion('/eliminarComentario/{{ comentario.id }}/')"
+            title="Eliminar comentario"
+        >
+            <i class="bi bi-trash"></i> Eliminar
+        </button>
+</td>
 
-                <td>
-                    <a href="#" class="btn btn-outline-danger btn-sm" onclick="confirmarEliminacion('/eliminarComentario/{{ comentario.id }}/')">🗑️ Eliminar</a>
-                </td>
             </tr>
             {% endfor %}
         </tbody>
@@ -49,5 +65,23 @@ function confirmarEliminacion(url){
         }
     });
 }
+</script>
+
+<script>
+$(document).ready(function() {
+    let table = new DataTable('#tbl', {
+        language: {
+            url: 'https://cdn.datatables.net/plug-ins/2.3.1/i18n/es-ES.json'
+        },
+        dom: 'Bfrtip', 
+        buttons: [
+            'copy',
+            'csv',
+            'excel',
+            'pdf',
+            'print'
+        ]
+    });
+});
 </script>
 {% endblock %}
