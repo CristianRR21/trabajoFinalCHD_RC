@@ -87,10 +87,10 @@ WSGI_APPLICATION = 'trabajoFinalCHD_RC.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'bdArriendoHabitaciones',
-        'USER': 'django',
-        'PASSWORD': 'django',
-        'HOST': 'localhost',
+        'NAME': 'arriendoutc',
+        'USER': 'cristian',
+        'PASSWORD': 'dMVNuHDquXIn25J8BAjuSc8ax2tExiJf',
+        'HOST': 'dpg-d1uuqsbuibrs738s9dj0-a.oregon-postgres.render.com',
         'PORT': '5432',
     }
 }
