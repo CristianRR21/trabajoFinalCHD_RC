@@ -1,0 +1,360 @@
+{% extends './plantilla.html'%}
+{% block contenido %}
+<!-- Bootstrap JS (necesario para que funcionen los modales) -->
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<h1 style="text-align:center">Listado de Administradores</h1>
+<button onclick="abrirModalCrear()" class="btn btn-success mb-3">Registrar nuevo Administrador</button>
+
+<table id="tblAdmins" class="table table-bordered table-hover text-center">
+    <thead class="table-primary">
+        <tr>
+            <th>ID</th>
+            <th>Nombres</th>
+            <th>Apellidos</th>
+            <th>Usuario</th>
+            <th>Correo</th>
+            <th>Teléfono</th>
+            <th>Dirección</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody id="tablaAdmins"></tbody>
+</table>
+
+<!-- MODAL CREAR -->
+<div class="modal fade" id="modalCrearAdmin" tabindex="-1">
+    <div class="modal-dialog">
+        <form id="formCrearAdmin" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Registrar Administrador</h5>
+            </div>
+            <div class="modal-body">
+                {% csrf_token %}
+                <div class="mb-3"><label>Nombres</label><input type="text" name="first_name" class="form-control"></div>
+                <div class="mb-3"><label>Apellidos</label><input type="text" name="last_name" class="form-control"></div>
+                <div class="mb-3"><label>Usuario</label><input type="text" name="username" class="form-control"></div>
+                <div class="mb-3"><label>Correo</label><input type="email" name="email" class="form-control"></div>
+                <div class="mb-3"><label>Teléfono</label><input type="text" name="telefono" class="form-control"></div>
+                <div class="mb-3"><label>Dirección</label><input type="text" name="direccion" class="form-control"></div>
+                <div class="mb-3"><label>Contraseña</label><input type="password" name="password" class="form-control"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success">Registrar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+<!-- MODAL EDITAR -->
+<div class="modal fade" id="modalEditarAdmin" tabindex="-1">
+    <div class="modal-dialog">
+        <form id="formEditarAdmin" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Administrador</h5>
+            </div>
+            <div class="modal-body">
+                {% csrf_token %}
+                <input type="hidden" name="adminId" id="edit_adminId">
+                <div class="mb-3"><label>Nombres</label><input type="text" name="first_name" id="edit_first_name" class="form-control"></div>
+                <div class="mb-3"><label>Apellidos</label><input type="text" name="last_name" id="edit_last_name" class="form-control"></div>
+                <div class="mb-3"><label>Usuario</label><input type="text" name="username" id="edit_username" class="form-control"></div>
+                <div class="mb-3"><label>Correo</label><input type="email" name="email" id="edit_email" class="form-control"></div>
+                <div class="mb-3"><label>Teléfono</label><input type="text" name="telefono" id="edit_telefono" class="form-control"></div>
+                <div class="mb-3"><label>Dirección</label><input type="text" name="direccion" id="edit_direccion" class="form-control"></div>
+                <div class="mb-3"><label>Contraseña</label><input type="password" name="password" class="form-control" placeholder="(dejar en blanco si no cambia)"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Actualizar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        listarAdmins();
+
+        // Crear
+        document.getElementById('formCrearAdmin').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            fetch('/nuevoAdmin/', {
+                method: 'POST',
+                headers: { 'X-CSRFToken': csrftoken },
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.mensaje); 
+                cerrarModalCrear();
+                listarAdmins();
+            });
+        });
+
+        // Editar
+        document.getElementById('formEditarAdmin').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const id = document.getElementById('edit_adminId').value;
+            const formData = new FormData(this);
+            fetch(`/editarAdmin/${id}/`, {
+                method: 'POST',
+                headers: { 'X-CSRFToken': csrftoken },
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.mensaje);  // Mostrar mensaje al usuario
+                cerrarModalCrear();
+                listarAdmins();
+            });
+        });
+    });
+
+    function listarAdmins() {
+        fetch('/listadoAdmins/')
+            .then(res => res.json())
+            .then(data => {
+                const tabla = document.getElementById('tablaAdmins');
+                tabla.innerHTML = '';
+                data.admins.forEach(admin => {
+                    tabla.innerHTML += `
+                        <tr>
+                            <td>${admin.id}</td>
+                            <td>${admin.first_name}</td>
+                            <td>${admin.last_name}</td>
+                            <td>${admin.username}</td>
+                            <td>${admin.email}</td>
+                            <td>${admin.telefono || '-'}</td>
+                            <td>${admin.direccion || '-'}</td>
+                            <td>
+                                <button class="btn btn-warning btn-sm" onclick="abrirModalEditar(${admin.id})">Editar</button>
+                                <button class="btn btn-danger btn-sm" onclick="eliminarAdmin(${admin.id})">Eliminar</button>
+                            </td>
+                        </tr>`;
+                });
+            });
+    }
+
+    function abrirModalCrear() {
+        document.getElementById('formCrearAdmin').reset();
+        const modal = new bootstrap.Modal(document.getElementById('modalCrearAdmin'));
+        modal.show();
+    }
+
+    function cerrarModalCrear() {
+        let modalEl = document.getElementById('modalCrearAdmin');
+        let modal = bootstrap.Modal.getInstance(modalEl);
+        if (!modal) {
+            modal = new bootstrap.Modal(modalEl);
+        }
+        modal.hide();
+        document.getElementById('formCrearAdmin').reset();
+    }
+
+    function abrirModalEditar(id) {
+        fetch('/listadoAdmins/')
+            .then(res => res.json())
+            .then(data => {
+                const admin = data.admins.find(a => a.id === id);
+                if (admin) {
+                    document.getElementById('edit_adminId').value = admin.id;
+                    document.getElementById('edit_first_name').value = admin.first_name;
+                    document.getElementById('edit_last_name').value = admin.last_name;
+                    document.getElementById('edit_username').value = admin.username;
+                    document.getElementById('edit_email').value = admin.email;
+                    document.getElementById('edit_telefono').value = admin.telefono;
+                    document.getElementById('edit_direccion').value = admin.direccion;
+                    const modal = new bootstrap.Modal(document.getElementById('modalEditarAdmin'));
+                    modal.show();
+                }
+            });
+    }
+
+
+function cerrarModalEditar() {
+    let modalEl = document.getElementById('modalEditarAdmin');
+    let modal = bootstrap.Modal.getInstance(modalEl);
+    if (!modal) {
+        modal = new bootstrap.Modal(modalEl);
+    }
+    modal.hide();
+    document.getElementById('formEditarAdmin').reset();
+}
+
+    function eliminarAdmin(id) {
+        if (confirm('¿Estás seguro de eliminar este administrador?')) {
+            fetch(`/eliminarAdmin/${id}/`, {
+                method: 'POST',
+                headers: { 'X-CSRFToken': csrftoken }
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.mensaje);
+                listarAdmins();
+            });
+                    }
+    }
+</script>
+
+<script>
+    // Método personalizado para solo letras
+    $.validator.addMethod("soloLetras", function(value, element) {
+        return this.optional(element) || /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(value);
+    }, "Solo se permiten letras");
+
+    
+        // Validación del formulario CREAR
+        $("#formCrearAdmin").validate({
+            rules: {
+                first_name: {
+                    required: true,
+                    minlength: 3,
+                    soloLetras: true
+                },
+                last_name: {
+                    required: true,
+                    minlength: 3,
+                    soloLetras: true
+                },
+                username: {
+                    required: true,
+                    minlength: 3
+                },
+                email: {
+                    required: true,
+                    email: true
+                },
+                telefono: {
+                    required: true,
+                    digits: true,
+                    minlength: 10,
+                    maxlength:10
+                },
+                direccion: {
+                    required: true,
+                    minlength: 5
+                },
+                password: {
+                    required: true,
+                    minlength: 6
+                }
+            },
+            messages: {
+                first_name: {
+                    required: "Ingrese sus nombres",
+                    minlength: "Mínimo 3 caracteres",
+                    soloLetras: "Solo se permiten letras"
+                },
+                last_name: {
+                    required: "Ingrese sus apellidos",
+                    minlength: "Mínimo 3 caracteres",
+                    soloLetras: "Solo se permiten letras"
+                },
+                username: {
+                    required: "Ingrese un nombre de usuario",
+                    minlength: "Mínimo 3 caracteres"
+                },
+                email: {
+                    required: "Ingrese un correo",
+                    email: "Correo inválido"
+                },
+                telefono: {
+                    required: "Ingrese su teléfono",
+                    digits: "Solo números",
+                    minlength: "Mínimo 10 dígitos",
+                    maxlength:"Máximo 10 dígitos"
+                },
+                direccion: {
+                    required: "Ingrese su dirección",
+                    minlength: "Mínimo 5 caracteres"
+                },
+                password: {
+                    required: "Ingrese una contraseña",
+                    minlength: "Mínimo 6 caracteres"
+                }
+            }
+        });
+
+
+        $("#formEditarAdmin").validate({
+            rules: {
+                first_name: {
+                    required: true,
+                    minlength: 3,
+                    soloLetras: true
+                },
+                last_name: {
+                    required: true,
+                    minlength: 3,
+                    soloLetras: true
+                },
+                username: {
+                    required: true,
+                    minlength: 3
+                },
+                email: {
+                    required: true,
+                    email: true
+                },
+                telefono: {
+                    required: true,
+                    digits: true,
+                    minlength: 10,
+                    maxlength:10
+                },
+                direccion: {
+                    required: true,
+                    minlength: 5
+                },
+                password: {
+                    minlength: 6
+                }
+            },
+            messages: {
+                first_name: {
+                    required: "Ingrese sus nombres",
+                    minlength: "Mínimo 3 caracteres",
+                    soloLetras: "Solo se permiten letras"
+                },
+                last_name: {
+                    required: "Ingrese sus apellidos",
+                    minlength: "Mínimo 3 caracteres",
+                    soloLetras: "Solo se permiten letras"
+                },
+                username: {
+                    required: "Ingrese un nombre de usuario",
+                    minlength: "Mínimo 3 caracteres"
+                },
+                email: {
+                    required: "Ingrese un correo",
+                    email: "Correo inválido"
+                },
+                telefono: {
+                    required: "Ingrese su teléfono",
+                    digits: "Solo números",
+                    minlength: "Mínimo 10 dígitos",
+                    maxlength:"Máximo 10 dígitos"
+                },
+                direccion: {
+                    required: "Ingrese su dirección",
+                    minlength: "Mínimo 5 caracteres"
+                },
+                password: {
+                    minlength: "Mínimo 6 caracteres"
+                }
+            }
+        });
+
+</script>
+
+
+{% endblock %}

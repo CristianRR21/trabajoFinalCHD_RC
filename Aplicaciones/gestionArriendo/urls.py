@@ -68,7 +68,13 @@ path('enviarMensaje/<int:id>/', views.enviarMensaje),
 
 
 
+    path('usuariosSistema/', views.usuariosSistema, name='usuariosSistema'),
 
+
+    path('listadoAdmins/', views.listadoAdmins, name='listadoAdmins'),
+    path('nuevoAdmin/', views.nuevoAdmin, name='nuevoAdmin'),
+    path('editarAdmin/<int:id>/', views.editarAdmin, name='editarAdmin'),
+    path('eliminarAdmin/<int:id>/', views.eliminarAdmin, name='eliminarAdmin'),
 
     
 

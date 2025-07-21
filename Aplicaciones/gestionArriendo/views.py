@@ -720,3 +720,52 @@ def enviarMensaje(request, id):
     email.send(fail_silently=False)
     messages.success(request, "Mensaje ENVIADO exitosamente")
     return redirect('/listarMensajes')
+
+
+def usuariosSistema(request): 
+    
+    return render(request, "administrador/usuariosSistema.html")
+
+
+
+def listadoAdmins(request):
+    admins = list(Usuario.objects.filter(rol='Administrador').values())
+    return JsonResponse({'admins': admins})
+
+def nuevoAdmin(request):
+    user = Usuario.objects.create_user(
+        first_name=request.POST.get('first_name'),
+        last_name=request.POST.get('last_name'),
+        username=request.POST.get('username'),
+        email=request.POST.get('email'),
+        password=request.POST.get('password'),
+        telefono=request.POST.get('telefono'),
+        direccion=request.POST.get('direccion'),
+        rol='Administrador'
+    )
+   
+    return JsonResponse({'mensaje': 'Administrador creado'})
+
+def editarAdmin(request, id):
+    if request.method == 'POST':
+        user = Usuario.objects.get(id=id, rol='Administrador')
+        user.first_name = request.POST.get('first_name')
+        user.last_name = request.POST.get('last_name')
+        user.email = request.POST.get('email')
+        user.username = request.POST.get('username')
+        user.telefono = request.POST.get('telefono')
+        user.direccion = request.POST.get('direccion')
+        if request.POST.get('password'):
+            user.set_password(request.POST.get('password'))
+        user.save()
+
+        
+        return JsonResponse({'mensaje': 'Administrador actualizado'})
+
+def eliminarAdmin(request, id):
+    if request.method == 'POST':
+        user = Usuario.objects.get(id=id, rol='Administrador')
+        user.delete()
+        
+        
+        return JsonResponse({'mensaje': 'Administrador eliminado'})
